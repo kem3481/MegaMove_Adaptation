@@ -19,6 +19,7 @@ public class ControlLevel_Trials : ControlLevel
     private Verify verifyPositions;
     private Controls controls;
     private int trials = 0;
+    private int score = 0;
 
     // Vive Control GameObjects
     public SteamVR_Input_Sources handType;
@@ -72,6 +73,21 @@ public class ControlLevel_Trials : ControlLevel
                 createStimulus.SetActive(false);
                 controllerPosition.SetActive(true);
                 beginText.SetActive(true);
+
+                /*if ()
+                {
+                    score = score + 100;
+                }
+
+                if ("position is within the penlty subtract 50")
+                {
+                    score = score - 50;
+                }
+
+                if ("poition is not within either, add nothing")
+                {
+                    score = score;
+                }*/
             }
 
             Debug.Log("Trigger pull position: " + verifyPositions.rightController.transform.localPosition.x + ", " + verifyPositions.rightController.transform.localPosition.y);

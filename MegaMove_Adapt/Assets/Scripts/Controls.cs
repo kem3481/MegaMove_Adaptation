@@ -20,7 +20,7 @@ public class Controls : MonoBehaviour
     public int radius, angle;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         // Presentation Angle
         angle = Random.RandomRange(0, 359);

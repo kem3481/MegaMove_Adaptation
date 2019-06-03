@@ -46,7 +46,7 @@ public class ControlLevel_Trials : ControlLevel
             beginText.SetActive(true);
             endText.SetActive(false);
         });
-        begin.SpecifyTermination(() => positionsCorrect != null && verifyPositions.positionsTimer > 2, stimOn);
+        begin.SpecifyTermination(() => positionsCorrect != null, stimOn);
 
         stimOn.AddInitializationMethod(() =>
         {

@@ -23,10 +23,16 @@ public class Verify : MonoBehaviour
     {
         rightController = GameObject.FindGameObjectWithTag("rightController");
         head = GameObject.FindGameObjectWithTag("Camera");
-        
-        positionsCorrect.SetActive(false);
-        handPosition.SetActive(false);
-        headPosition.SetActive(false);
+
+        if (rightController == null)
+        {
+            Debug.Log("No right controller found");
+        }
+
+        if (head == null)
+        {
+            Debug.Log("no head found");
+        }
     }
 
     // Update is called once per frame
@@ -41,7 +47,7 @@ public class Verify : MonoBehaviour
             rightController.transform.localPosition.z > handStart.transform.localPosition.z - .05 &&
             rightController.transform.localPosition.z < handStart.transform.localPosition.z + .05)
         {
-            handPosition.SetActive(true);
+            Instantiate(handPosition);
         }
 
         // If the controller is not within the start sphere and the lithand prefab exists, destory the lit hand prefab and create the unlit hand prefab
@@ -53,7 +59,7 @@ public class Verify : MonoBehaviour
            rightController.transform.localPosition.z < handStart.transform.localPosition.z - .05f ||
            rightController.transform.localPosition.z > handStart.transform.localPosition.z + .05f))
         {
-            handPosition.SetActive(false);
+            Destroy(handPosition);
         }
 
         // If the headset is within the start column and the lithead prefab does not exist, destory the unlit head prefab and create the lit head prefab
@@ -65,7 +71,7 @@ public class Verify : MonoBehaviour
            head.transform.localPosition.z > headStart.transform.localPosition.z - .05f &&
            head.transform.localPosition.z < headStart.transform.localPosition.z + .05f)
         {
-            headPosition.SetActive(true);
+            Instantiate(headPosition);
         }
 
         // If the headset is not within the start column and the lithead prefab does exist, destory the lit head prefab and create the unlit head prefab
@@ -77,12 +83,12 @@ public class Verify : MonoBehaviour
            head.transform.localPosition.z < headStart.transform.localPosition.z - .05f ||
            head.transform.localPosition.z > headStart.transform.localPosition.z + .05f))
         {
-            headPosition.SetActive(false);
+            Destroy(headPosition);
         }
 
         if (headPosition != null && handPosition != null)
         {
-            positionsCorrect.SetActive(true);
+            Instantiate(positionsCorrect);
         }
 
         while (positionsCorrect != null)

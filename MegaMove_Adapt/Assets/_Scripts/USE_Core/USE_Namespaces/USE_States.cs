@@ -139,7 +139,7 @@ namespace USE_States
                 StateDefaultInitialization = init;
             }
         }
-        public void AddInitializationMethod(VoidDelegate method)
+        public void AddStateInitializationMethod(VoidDelegate method)
         {
             string name = StateName + "Initialization_" + StateInitializations.Count;
             AddInitializationMethod(method, name);
@@ -494,7 +494,7 @@ namespace USE_States
 
         public bool Paused { get; set; }
 
-        public GameObject InitScreen;
+        //public GameObject InitScreen;
 
         public abstract void DefineControlLevel();
 
@@ -521,12 +521,12 @@ namespace USE_States
             if(CallDefineLevelAutomatically)
                 DefineControlLevel();
 
-            if (InitScreen != null)
+           /* if (InitScreen != null)
             {
                 State initScreen = new State("InitScreen");
                 initScreen.Parent = this;
                 initScreen.DebugActive = DebugActive;
-                initScreen.AddInitializationMethod(() =>
+                initScreen.AddStateInitializationMethod(() =>
                 {
                     foreach (GameObject g in InitScreen.GetComponent<InitScreen>().disableOnStart)
                         g.SetActive(false);
@@ -549,7 +549,7 @@ namespace USE_States
                 AvailableStates.Insert(0, initScreen);
                 AvailableStateNames.Insert(0, "InitScreen");
                 currentState = initScreen;
-            }
+            }*/
 
         }
         public void InitializeControlLevel(State state)
@@ -706,7 +706,7 @@ namespace USE_States
             {
                 if (CheckForState(s))
                 {
-                    s.AddInitializationMethod(method);
+                    s.AddStateInitializationMethod(method);
                 }
                 else
                 {

@@ -26,5 +26,12 @@ public class Verify : MonoBehaviour
             positionsCorrect = true;
             Debug.Log("Positions are correct");
         }
+
+        if ((head.headPosition == false && controller.handPosition == true) ||
+            (head.headPosition == true && controller.handPosition == false) ||
+            (head.headPosition == false && controller.handPosition == false))
+        {
+            positionsCorrect = false;
+        }
     }
 }

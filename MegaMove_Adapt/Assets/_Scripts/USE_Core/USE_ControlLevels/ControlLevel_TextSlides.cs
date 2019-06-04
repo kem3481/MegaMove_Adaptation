@@ -25,7 +25,7 @@ public class ControlLevel_TextSlides : ControlLevel {
         });
 
         //display text
-        textSlide.AddInitializationMethod(() =>
+        textSlide.AddStateInitializationMethod(() =>
         {
         textObj.SetActive(true);
         textObj.GetComponent<Text>().text = slideText[slideCount] + defaultEndText;

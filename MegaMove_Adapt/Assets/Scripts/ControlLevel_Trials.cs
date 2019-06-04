@@ -7,18 +7,20 @@ using Valve.VR;
 
 public class ControlLevel_Trials : ControlLevel
 {
-    public GameObject controllerPosition;
-    public GameObject playerPosition;
-    public GameObject gamecontroller;
+    public GameObject controllerPosition; // Hand position column
+    public GameObject playerPosition; // headset poisiton column
+    public GameObject gamecontroller; // Set to which controller is being used
+    public GameObject manager; // control levels game object, holding all scirpts
+    public GameObject beginText; // instructions canvas
+    public GameObject endText; // thank you for playing canvas
 
-    public GameObject beginText;
-    public GameObject endText;
-    private Verify verifyPositions;
-    private Controls controls;
-    private ControllerCheck controller;
-    private HeadCheck head;
-    private int trials = 0;
-    private int score = 0;
+    private Verify verifyPositions; // script
+    private Controls controls; // script
+    private ControllerCheck controller; // scripts
+    private HeadCheck head; // scripts
+    private int trials = 0; // number of total trials
+    private int score = 0; // player score
+    private int test = 0; // response testing
 
     // Vive Control GameObjects
     public SteamVR_Input_Sources handType;
@@ -26,41 +28,44 @@ public class ControlLevel_Trials : ControlLevel
 
     public override void DefineControlLevel()
     { 
-        // Accessing other scripts and objects
-        verifyPositions = GetComponent<Verify>();
-        controls = GetComponent<Controls>();
-        controller = GetComponent<ControllerCheck>();
-        head = GetComponent<HeadCheck>();
-
         // Defining States
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
         State stimOn = new State("Stimulus"); // Step 3
         State collectResponse = new State("CollectResponse"); // Step 4
         State feedback = new State("Feedback"); // Step 5
         AddActiveStates(new List<State> { begin, stimOn, collectResponse, feedback });
+        
+        // Accessing other scripts
+            verifyPositions = manager.GetComponent<Verify>();
+            controls = manager.GetComponent<Controls>();
+            controller = controllerPosition.GetComponent<ControllerCheck>();
+            head = playerPosition.GetComponent<HeadCheck>();
 
-        begin.AddInitializationMethod(() =>
+        begin.AddStateInitializationMethod(() =>
         {
             controllerPosition.SetActive(true);
             beginText.SetActive(true);
             endText.SetActive(false);
+            controls.testobject.SetActive(false);
+            
         });
-        begin.SpecifyStateTermination(() => head.headPosition == true && controller.handPosition == true, stimOn);
+        begin.SpecifyStateTermination(() => verifyPositions.positionsCorrect, stimOn);
+        begin.AddDefaultTerminationMethod(() => beginText.SetActive(false));
 
-        stimOn.AddInitializationMethod(() =>
+        stimOn.AddStateInitializationMethod(() =>
         {
             controls.testobject.SetActive(true);
             beginText.SetActive(false);
             controllerPosition.SetActive(false);
             trials++;
-
-            Debug.Log("Overlap: " + controls.testobject);
-            Debug.Log("Radius: " + controls.radius);
-            Debug.Log("Angle: " + controls.angle);
+            
+            // Debug.Log("Overlap: " + controls.testobject);
+            // Debug.Log("Radius: " + controls.radius);
+            // Debug.Log("Angle: " + controls.angle);
         });
         stimOn.SpecifyStateTermination(() => controls.testobject == null, collectResponse);
 
-        collectResponse.AddInitializationMethod(() =>
+        collectResponse.AddStateInitializationMethod(() =>
         {
             bool GetSqueeze()
             {
@@ -93,7 +98,7 @@ public class ControlLevel_Trials : ControlLevel
         collectResponse.SpecifyStateTermination(() => trials < 90, begin);
         collectResponse.SpecifyStateTermination(() => trials == 90, feedback);
 
-        feedback.AddInitializationMethod(() =>
+        feedback.AddStateInitializationMethod(() =>
         {
             endText.SetActive(true);
         });

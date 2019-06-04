@@ -28,4 +28,5 @@ public class ControllerCheck : MonoBehaviour
             handPosition = false;
         }
     }
+
 }

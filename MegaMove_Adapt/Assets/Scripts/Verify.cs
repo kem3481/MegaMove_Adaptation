@@ -24,7 +24,6 @@ public class Verify : MonoBehaviour
         if (head.headPosition == true && controller.handPosition == true)
         {
             positionsCorrect = true;
-            Debug.Log("Positions are correct");
         }
 
         if ((head.headPosition == false && controller.handPosition == true) ||
@@ -32,6 +31,16 @@ public class Verify : MonoBehaviour
             (head.headPosition == false && controller.handPosition == false))
         {
             positionsCorrect = false;
+        }
+        
+        if (positionsCorrect == true)
+        {
+            Debug.Log("Positions are correct");
+        }
+
+        if (hand.activeSelf == false)
+        {
+            controller.handPosition = false;
         }
     }
 }

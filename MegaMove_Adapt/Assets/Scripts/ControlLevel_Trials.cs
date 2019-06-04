@@ -5,11 +5,13 @@ using UnityEngine.UI;
 using USE_States;
 using Valve.VR;
 
+
 public class ControlLevel_Trials : ControlLevel
 {
     public GameObject controllerPosition; // Hand position column
     public GameObject playerPosition; // headset poisiton column
-    public GameObject gamecontroller; // Set to which controller is being used
+    public GameObject gamecontroller; // Set to which controller is being used (icon)
+    public GameObject test; // leftcontroller or right controller in heirarchy
     public GameObject manager; // control levels game object, holding all scirpts
     public GameObject beginText; // instructions canvas
     public GameObject endText; // thank you for playing canvas
@@ -18,9 +20,17 @@ public class ControlLevel_Trials : ControlLevel
     private Controls controls; // script
     private ControllerCheck controller; // scripts
     private HeadCheck head; // scripts
+    private TriggerPull triggered; // scripts
     private int trials = 0; // number of total trials
     private int score = 0; // player score
-    private int test = 0; // response testing
+    private int Time = 0;
+
+    [System.NonSerialized]
+    public GameObject testobject;
+    [System.NonSerialized]
+    public float angle;
+    [System.NonSerialized]
+    public float radius;
 
     // Vive Control GameObjects
     public SteamVR_Input_Sources handType;
@@ -32,21 +42,22 @@ public class ControlLevel_Trials : ControlLevel
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
         State stimOn = new State("Stimulus"); // Step 3
         State collectResponse = new State("CollectResponse"); // Step 4
+        State destination = new State("Destination"); // sends the script either back to begin or to feeback
         State feedback = new State("Feedback"); // Step 5
-        AddActiveStates(new List<State> { begin, stimOn, collectResponse, feedback });
+        AddActiveStates(new List<State> { begin, stimOn, collectResponse, destination, feedback });
         
         // Accessing other scripts
-            verifyPositions = manager.GetComponent<Verify>();
-            controls = manager.GetComponent<Controls>();
-            controller = controllerPosition.GetComponent<ControllerCheck>();
-            head = playerPosition.GetComponent<HeadCheck>();
+        verifyPositions = manager.GetComponent<Verify>();
+        controls = manager.GetComponent<Controls>();
+        controller = controllerPosition.GetComponent<ControllerCheck>();
+        head = playerPosition.GetComponent<HeadCheck>();
+        triggered = test.GetComponent<TriggerPull>();
 
         begin.AddStateInitializationMethod(() =>
         {
             controllerPosition.SetActive(true);
             beginText.SetActive(true);
             endText.SetActive(false);
-            controls.testobject.SetActive(false);
             
         });
         begin.SpecifyStateTermination(() => verifyPositions.positionsCorrect, stimOn);
@@ -54,49 +65,49 @@ public class ControlLevel_Trials : ControlLevel
 
         stimOn.AddStateInitializationMethod(() =>
         {
-            controls.testobject.SetActive(true);
             beginText.SetActive(false);
             controllerPosition.SetActive(false);
             trials++;
-            
-            // Debug.Log("Overlap: " + controls.testobject);
-            // Debug.Log("Radius: " + controls.radius);
-            // Debug.Log("Angle: " + controls.angle);
-        });
-        stimOn.SpecifyStateTermination(() => controls.testobject == null, collectResponse);
 
-        collectResponse.AddStateInitializationMethod(() =>
+            angle = Random.RandomRange(0, 359);
+            radius = controls.radii[UnityEngine.Random.Range(0, 2)];
+            if (testobject == null)
+            {
+                testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
+                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle)), (radius * Mathf.Sin(angle)) + 2.75f, 3f);
+                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle*(Mathf.PI/180));
+            }
+
+            Debug.Log("Overlap: " + testobject);
+            Debug.Log("Radius: " + radius);
+            Debug.Log("Angle: " + angle);
+            Debug.Log("Trial: " + trials);
+        });
+        stimOn.AddTimer(1f, collectResponse);
+        
+        collectResponse.AddUpdateMethod(() =>
         {
-            bool GetSqueeze()
+            
+            if (triggered.trigger == true)
             {
-                return squeezeAction.GetStateDown(handType);
+                Destroy(testobject);
+                Debug.Log("Trigger pull position: " + gamecontroller.transform.localPosition.x + ", " + gamecontroller.transform.localPosition.y);
             }
-
-            if (GetSqueeze())
-            {
-                controllerPosition.SetActive(true);
-                beginText.SetActive(true);
-
-                /*if ()
-                {
-                    score = score + 100;
-                }
-
-                if ("position is within the penlty subtract 50")
-                {
-                    score = score - 50;
-                }
-
-                if ("poition is not within either, add nothing")
-                {
-                    score = score;
-                }*/
-            }
-
-            Debug.Log("Trigger pull position: " + gamecontroller.transform.localPosition.x + ", " + gamecontroller.transform.localPosition.y);
         });
-        collectResponse.SpecifyStateTermination(() => trials < 90, begin);
-        collectResponse.SpecifyStateTermination(() => trials == 90, feedback);
+        collectResponse.SpecifyStateTermination(() => testobject == null, destination);
+
+
+        destination.AddStateInitializationMethod(() =>
+        {
+            if (trials < 90)
+            {
+                destination.SpecifyStateTermination(() => testobject == null, begin);
+            }
+            if (trials >= 90)
+            {
+                destination.SpecifyStateTermination(() => testobject == null, feedback);
+            }
+        });
 
         feedback.AddStateInitializationMethod(() =>
         {
@@ -104,4 +115,5 @@ public class ControlLevel_Trials : ControlLevel
         });
 
     }
+
 }

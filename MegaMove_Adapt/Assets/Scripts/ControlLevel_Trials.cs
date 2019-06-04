@@ -7,16 +7,13 @@ using Valve.VR;
 
 public class ControlLevel_Trials : ControlLevel
 {
-    [System.NonSerialized]
-    public GameObject positionsCorrect;
-
     public GameObject controllerPosition;
     public GameObject playerPosition;
     public GameObject createStimulus;
+    public GameObject rightController;
 
-    //public GameObject beginText;
-    //public GameObject endText;
-    public Text message;
+    public GameObject beginText;
+    public GameObject endText;
     private Verify verifyPositions;
     private Controls controls;
     private int trials = 0;
@@ -29,8 +26,6 @@ public class ControlLevel_Trials : ControlLevel
     public override void DefineControlLevel()
     { 
         // Accessing other scripts and objects
-        //beginText = GameObject.FindGameObjectWithTag("beginText");
-        //endText = GameObject.FindGameObjectWithTag("endText");
         verifyPositions = GetComponent<Verify>();
         controls = GetComponent<Controls>();
 
@@ -44,18 +39,16 @@ public class ControlLevel_Trials : ControlLevel
         begin.AddInitializationMethod(() =>
         {
             controllerPosition.SetActive(true);
-            //beginText.SetActive(true);
-            //endText.SetActive(false);
-            message.text = ("Position yourself so that the white circle is in the center of your visual field \n Once you are ready to begin, look and point your controller at this circle"); 
+            beginText.SetActive(true);
+            endText.SetActive(false);
         });
-        begin.SpecifyTermination(() => positionsCorrect != null, stimOn);
+        begin.SpecifyTermination(() => verifyPositions.positionsCorrect == true, stimOn);
 
         stimOn.AddInitializationMethod(() =>
         {
-            createStimulus.SetActive(true);
-            //beginText.SetActive(false);
+            controls.testobject.SetActive(true);
+            beginText.SetActive(false);
             controllerPosition.SetActive(false);
-            message.text = (string.Empty);
             trials++;
 
             Debug.Log("Overlap: " + controls.testobject);
@@ -73,10 +66,8 @@ public class ControlLevel_Trials : ControlLevel
 
             if (GetSqueeze())
             {
-                createStimulus.SetActive(false);
                 controllerPosition.SetActive(true);
-                //beginText.SetActive(true);
-                message.text = ("Position yourself so that the white circle is in the center of your visual field \n Once you are ready to begin, look and point your controller at this circle");
+                beginText.SetActive(true);
 
                 /*if ()
                 {
@@ -94,15 +85,14 @@ public class ControlLevel_Trials : ControlLevel
                 }*/
             }
 
-            Debug.Log("Trigger pull position: " + verifyPositions.rightController.transform.localPosition.x + ", " + verifyPositions.rightController.transform.localPosition.y);
+            Debug.Log("Trigger pull position: " + rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y);
         });
         collectResponse.SpecifyTermination(() => trials < 90, begin);
         collectResponse.SpecifyTermination(() => trials == 90, feedback);
 
         feedback.AddInitializationMethod(() =>
         {
-            message.text = ("Thank you for playing!");
-            //endText.SetActive(true);
+            endText.SetActive(true);
         });
 
     }

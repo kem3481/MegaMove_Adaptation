@@ -42,5 +42,7 @@ public class Controls : MonoBehaviour
         testobject = Instantiate(targets[UnityEngine.Random.Range(0, 2)]);
         testobject.transform.position = new Vector3(radius * Mathf.Cos(testobject.transform.rotation.z), radius * Mathf.Sin(testobject.transform.rotation.z), 0f);
         testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
+
+        testobject.SetActive(false);
     }
 }

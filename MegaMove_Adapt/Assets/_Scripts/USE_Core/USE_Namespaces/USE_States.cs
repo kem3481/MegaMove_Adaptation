@@ -191,7 +191,7 @@ namespace USE_States
         }
 
 
-        public void SpecifyTermination(BoolDelegate terminationCriterion, State successorState)
+        public void SpecifyStateTermination(BoolDelegate terminationCriterion, State successorState)
         {
             string tmp = null;
             SpecifyTermination(terminationCriterion, successorState, tmp);
@@ -919,7 +919,7 @@ namespace USE_States
             {
                 if (CheckForState(s))
                 {
-                    s.SpecifyTermination(terminationCriterion, successorState);
+                    s.SpecifyStateTermination(terminationCriterion, successorState);
                 }
                 else
                 {

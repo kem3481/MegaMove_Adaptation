@@ -9,13 +9,14 @@ public class ControlLevel_Trials : ControlLevel
 {
     public GameObject controllerPosition;
     public GameObject playerPosition;
-    public GameObject createStimulus;
-    public GameObject rightController;
+    public GameObject gamecontroller;
 
     public GameObject beginText;
     public GameObject endText;
     private Verify verifyPositions;
     private Controls controls;
+    private ControllerCheck controller;
+    private HeadCheck head;
     private int trials = 0;
     private int score = 0;
 
@@ -28,6 +29,8 @@ public class ControlLevel_Trials : ControlLevel
         // Accessing other scripts and objects
         verifyPositions = GetComponent<Verify>();
         controls = GetComponent<Controls>();
+        controller = GetComponent<ControllerCheck>();
+        head = GetComponent<HeadCheck>();
 
         // Defining States
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
@@ -42,7 +45,7 @@ public class ControlLevel_Trials : ControlLevel
             beginText.SetActive(true);
             endText.SetActive(false);
         });
-        begin.SpecifyTermination(() => verifyPositions.positionsCorrect == true, stimOn);
+        begin.SpecifyStateTermination(() => head.headPosition == true && controller.handPosition == true, stimOn);
 
         stimOn.AddInitializationMethod(() =>
         {
@@ -55,7 +58,7 @@ public class ControlLevel_Trials : ControlLevel
             Debug.Log("Radius: " + controls.radius);
             Debug.Log("Angle: " + controls.angle);
         });
-        stimOn.SpecifyTermination(() => createStimulus != null, collectResponse);
+        stimOn.SpecifyStateTermination(() => controls.testobject == null, collectResponse);
 
         collectResponse.AddInitializationMethod(() =>
         {
@@ -85,10 +88,10 @@ public class ControlLevel_Trials : ControlLevel
                 }*/
             }
 
-            Debug.Log("Trigger pull position: " + rightController.transform.localPosition.x + ", " + rightController.transform.localPosition.y);
+            Debug.Log("Trigger pull position: " + gamecontroller.transform.localPosition.x + ", " + gamecontroller.transform.localPosition.y);
         });
-        collectResponse.SpecifyTermination(() => trials < 90, begin);
-        collectResponse.SpecifyTermination(() => trials == 90, feedback);
+        collectResponse.SpecifyStateTermination(() => trials < 90, begin);
+        collectResponse.SpecifyStateTermination(() => trials == 90, feedback);
 
         feedback.AddInitializationMethod(() =>
         {

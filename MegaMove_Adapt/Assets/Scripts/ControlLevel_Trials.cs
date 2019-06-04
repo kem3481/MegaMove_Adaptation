@@ -14,8 +14,9 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject playerPosition;
     public GameObject createStimulus;
 
-    private GameObject beginText;
-    private GameObject endText;
+    //public GameObject beginText;
+    //public GameObject endText;
+    public Text message;
     private Verify verifyPositions;
     private Controls controls;
     private int trials = 0;
@@ -28,8 +29,8 @@ public class ControlLevel_Trials : ControlLevel
     public override void DefineControlLevel()
     { 
         // Accessing other scripts and objects
-        beginText = GameObject.FindGameObjectWithTag("beginText");
-        endText = GameObject.FindGameObjectWithTag("endText");
+        //beginText = GameObject.FindGameObjectWithTag("beginText");
+        //endText = GameObject.FindGameObjectWithTag("endText");
         verifyPositions = GetComponent<Verify>();
         controls = GetComponent<Controls>();
 
@@ -43,16 +44,18 @@ public class ControlLevel_Trials : ControlLevel
         begin.AddInitializationMethod(() =>
         {
             controllerPosition.SetActive(true);
-            beginText.SetActive(true);
-            endText.SetActive(false);
+            //beginText.SetActive(true);
+            //endText.SetActive(false);
+            message.text = ("Position yourself so that the white circle is in the center of your visual field \n Once you are ready to begin, look and point your controller at this circle"); 
         });
         begin.SpecifyTermination(() => positionsCorrect != null, stimOn);
 
         stimOn.AddInitializationMethod(() =>
         {
             createStimulus.SetActive(true);
-            beginText.SetActive(false);
+            //beginText.SetActive(false);
             controllerPosition.SetActive(false);
+            message.text = (string.Empty);
             trials++;
 
             Debug.Log("Overlap: " + controls.testobject);
@@ -72,7 +75,8 @@ public class ControlLevel_Trials : ControlLevel
             {
                 createStimulus.SetActive(false);
                 controllerPosition.SetActive(true);
-                beginText.SetActive(true);
+                //beginText.SetActive(true);
+                message.text = ("Position yourself so that the white circle is in the center of your visual field \n Once you are ready to begin, look and point your controller at this circle");
 
                 /*if ()
                 {
@@ -97,7 +101,8 @@ public class ControlLevel_Trials : ControlLevel
 
         feedback.AddInitializationMethod(() =>
         {
-            endText.SetActive(true);
+            message.text = ("Thank you for playing!");
+            //endText.SetActive(true);
         });
 
     }

@@ -11,35 +11,29 @@ public class Verify : MonoBehaviour
     
     public GameObject handStart;
     public GameObject headStart;
-    public GameObject handPosition;
-    public GameObject headPosition;
-    public GameObject positionsCorrect;
+    private bool handPosition;
+    private bool headPosition;
+    private bool positionsCorrect;
 
     [System.NonSerialized]
     public float positionsTimer = 0;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         rightController = GameObject.FindGameObjectWithTag("rightController");
         head = GameObject.FindGameObjectWithTag("Camera");
 
-        if (rightController == null)
-        {
-            Debug.Log("No right controller found");
-        }
-
-        if (head == null)
-        {
-            Debug.Log("no head found");
-        }
+        handPosition = false;
+        headPosition = false;
+        positionsCorrect = false;
     }
 
     // Update is called once per frame
     public void Update()
     {
         // If the controller is within the sphere that designates beginning hand position and the unlit hand prefab exists, destroy the unlit hand prefab and create lit hand prefab
-        if (handPosition == null &&
+        if (handPosition == false &&
             rightController.transform.localPosition.x > handStart.transform.localPosition.x - .05f &&
             rightController.transform.localPosition.x < handStart.transform.localPosition.x + .05f &&
             rightController.transform.localPosition.y > handStart.transform.localPosition.y - .05f &&
@@ -47,11 +41,11 @@ public class Verify : MonoBehaviour
             rightController.transform.localPosition.z > handStart.transform.localPosition.z - .05 &&
             rightController.transform.localPosition.z < handStart.transform.localPosition.z + .05)
         {
-            Instantiate(handPosition);
+            handPosition = true;
         }
 
         // If the controller is not within the start sphere and the lithand prefab exists, destory the lit hand prefab and create the unlit hand prefab
-        if (handPosition != null &&
+        if (handPosition == true &&
            (rightController.transform.localPosition.x < handStart.transform.localPosition.x - .05f ||
            rightController.transform.localPosition.x > handStart.transform.localPosition.x + .05f ||
            rightController.transform.localPosition.y < handStart.transform.localPosition.y - .05f ||
@@ -59,11 +53,11 @@ public class Verify : MonoBehaviour
            rightController.transform.localPosition.z < handStart.transform.localPosition.z - .05f ||
            rightController.transform.localPosition.z > handStart.transform.localPosition.z + .05f))
         {
-            Destroy(handPosition);
+            handPosition = false;
         }
 
         // If the headset is within the start column and the lithead prefab does not exist, destory the unlit head prefab and create the lit head prefab
-        if (headPosition == null &&
+        if (headPosition == false &&
            head.transform.localPosition.x > headStart.transform.localPosition.x - .05f &&
            head.transform.localPosition.x < headStart.transform.localPosition.x + .05f &&
            head.transform.localPosition.y > headStart.transform.localPosition.y - .05f &&
@@ -71,11 +65,11 @@ public class Verify : MonoBehaviour
            head.transform.localPosition.z > headStart.transform.localPosition.z - .05f &&
            head.transform.localPosition.z < headStart.transform.localPosition.z + .05f)
         {
-            Instantiate(headPosition);
+            headPosition = true;
         }
 
         // If the headset is not within the start column and the lithead prefab does exist, destory the lit head prefab and create the unlit head prefab
-        if (headPosition != null &&
+        if (headPosition == true &&
            (head.transform.localPosition.x < headStart.transform.localPosition.x - .05f ||
            head.transform.localPosition.x > headStart.transform.localPosition.x + .05f ||
            head.transform.localPosition.y < headStart.transform.localPosition.y - .05f ||
@@ -83,15 +77,15 @@ public class Verify : MonoBehaviour
            head.transform.localPosition.z < headStart.transform.localPosition.z - .05f ||
            head.transform.localPosition.z > headStart.transform.localPosition.z + .05f))
         {
-            Destroy(headPosition);
+            headPosition = false;
         }
 
-        if (headPosition != null && handPosition != null)
+        if (headPosition == true && handPosition == true)
         {
-            Instantiate(positionsCorrect);
+            positionsCorrect = true;
         }
 
-        while (positionsCorrect != null)
+        while (positionsCorrect == true)
         {
             positionsTimer = positionsTimer + Time.deltaTime;
         }

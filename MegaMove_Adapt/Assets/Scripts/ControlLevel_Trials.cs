@@ -83,7 +83,7 @@ public class ControlLevel_Trials : ControlLevel
             Debug.Log("Angle: " + angle);
             Debug.Log("Trial: " + trials);
         });
-        stimOn.AddTimer(1f, collectResponse);
+        stimOn.AddTimer(.1f, collectResponse);
         
         collectResponse.AddUpdateMethod(() =>
         {

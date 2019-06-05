@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using USE_States;
 using Valve.VR;
+using System;
+using System.IO;
+using System.Text;
 
 
 public class ControlLevel_Trials : ControlLevel
@@ -17,6 +20,8 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject endText; // thank you for playing canvas
     public Text scoreDisplay;
     private GameObject penalty;
+    public string startTime;
+    public string endTime;
 
     private Verify verifyPositions; // script
     private Controls controls; // script
@@ -24,10 +29,11 @@ public class ControlLevel_Trials : ControlLevel
     private HeadCheck head; // scripts
     private TriggerPull triggered; // scripts
     private PointSystem points; // scripts
-    private int trials = 0; // number of total trials
+    public int trials = 0; // number of total trials
     private int score; // player score
     private int trialScore;
     private int end = 0;
+    public bool data;
 
     [System.NonSerialized]
     public GameObject testobject;
@@ -63,6 +69,8 @@ public class ControlLevel_Trials : ControlLevel
 
         begin.AddStateInitializationMethod(() =>
         {
+            data = false;
+            string startTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
             if (trials == 0)
             {
                 score = 0;
@@ -93,7 +101,7 @@ public class ControlLevel_Trials : ControlLevel
             controllerPosition.SetActive(false);
             trials++;
 
-            angle = Random.RandomRange(0, 359);
+            angle = UnityEngine.Random.RandomRange(0, 359);
             radius = controls.radii[UnityEngine.Random.Range(0, 2)];
             if (testobject == null)
             {
@@ -179,6 +187,8 @@ public class ControlLevel_Trials : ControlLevel
         feedback.AddStateInitializationMethod(() =>
         {
             endText.SetActive(true);
+            string endTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            data = true;
         });
 
     }

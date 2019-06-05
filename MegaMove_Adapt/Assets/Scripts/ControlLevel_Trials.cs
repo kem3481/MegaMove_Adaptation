@@ -23,7 +23,7 @@ public class ControlLevel_Trials : ControlLevel
     private TriggerPull triggered; // scripts
     private int trials = 0; // number of total trials
     private int score = 0; // player score
-    private int Time = 0;
+    private int end = 0;
 
     [System.NonSerialized]
     public GameObject testobject;
@@ -74,7 +74,7 @@ public class ControlLevel_Trials : ControlLevel
             if (testobject == null)
             {
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
-                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle)), (radius * Mathf.Sin(angle)) + 2.75f, 3f);
+                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle)), (radius * Mathf.Sin(angle)) + 2.75f, 2.5f);
                 testobject.transform.eulerAngles = new Vector3(0f, 0f, angle*(Mathf.PI/180));
             }
 
@@ -91,7 +91,8 @@ public class ControlLevel_Trials : ControlLevel
             if (triggered.trigger == true)
             {
                 Destroy(testobject);
-                Debug.Log("Trigger pull position: " + gamecontroller.transform.localPosition.x + ", " + gamecontroller.transform.localPosition.y);
+                Debug.Log("Trigger pull position: " + test.transform.localPosition.x + ", " + test.transform.localPosition.y);
+                Debug.Log("Target position: " + testobject.transform.localPosition.x + ", " + testobject.transform.localPosition.y);
             }
         });
         collectResponse.SpecifyStateTermination(() => testobject == null, destination);
@@ -101,13 +102,15 @@ public class ControlLevel_Trials : ControlLevel
         {
             if (trials < 90)
             {
-                destination.SpecifyStateTermination(() => testobject == null, begin);
+                end = 1;
             }
-            if (trials >= 90)
+            else
             {
-                destination.SpecifyStateTermination(() => testobject == null, feedback);
+                end = 2;
             }
         });
+        destination.SpecifyStateTermination(() => end == 1, begin);
+        destination.SpecifyStateTermination(() => end == 2, feedback);
 
         feedback.AddStateInitializationMethod(() =>
         {

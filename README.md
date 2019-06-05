@@ -7,3 +7,6 @@ HeadCheck is on the player position game object which is a child of start positi
 ControllerCheck is on the controller position game obeject which is a child of start postiions
 FlipNormals is on the background game object 
 PointSystem is on the target prefabs
+
+# At Start
+set controllevels test as either left or right controller

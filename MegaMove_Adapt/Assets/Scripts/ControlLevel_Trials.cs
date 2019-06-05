@@ -74,8 +74,8 @@ public class ControlLevel_Trials : ControlLevel
             if (testobject == null)
             {
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
-                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle)), (radius * Mathf.Sin(angle)) + 2.75f, 2.5f);
-                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle*(Mathf.PI/180));
+                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 2.75f, 2.5f);
+                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
             }
 
             Debug.Log("Overlap: " + testobject);

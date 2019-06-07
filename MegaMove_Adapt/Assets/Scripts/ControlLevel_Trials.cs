@@ -109,7 +109,13 @@ public class ControlLevel_Trials : ControlLevel
                 testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 2.75f, 2.5f);
                 testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
             }
-
+            /*
+            if (testobject == null) 
+            {
+            testobject = Instantiate(TrialTypes.trials[UnityEngine.Random.Raneg(0, TrialTypes.trials.Length)]);
+            testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
+            }
+            */
             penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
 
             Debug.Log("Overlap: " + testobject);

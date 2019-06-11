@@ -13,7 +13,7 @@ using System.Text;
 /// </remark>
 public class DataCollection : MonoBehaviour
 {
-    public string FolderName = "C://Users//kem3481//Desktop//MegaMove_Adaptation";
+    public string FolderName = "C://Users//performlab-admin//Desktop//MegaMove_Adapt";
     public string FileName = "EndPointsData";
     private string OutputDir;
 
@@ -30,6 +30,8 @@ public class DataCollection : MonoBehaviour
     public float angle, radius;
     [System.NonSerialized]
     public ControlLevel_Trials controlLevel;
+    [System.NonSerialized]
+    public TriggerPull triggerPull;
 
     public GameObject manager;
     
@@ -48,15 +50,7 @@ public class DataCollection : MonoBehaviour
     void Start()
     {
         controlLevel = manager.GetComponent<ControlLevel_Trials>();
-
-        trialNumber = controlLevel.trials;
-        triggerPosition = new Vector3(controlLevel.trigger_x, controlLevel.trigger_y, controlLevel.trigger_z);
-        targetPosition = new Vector3(controlLevel.target_x, controlLevel.target_y, controlLevel.target_z);
-        startTime = controlLevel.startTime;
-        endTime = controlLevel.endTime;
-        testObject = controlLevel.testobject;
-        radius = controlLevel.radius;
-        angle = controlLevel.angle;
+        triggerPull = controlLevel.test.GetComponent<TriggerPull>();
 
         // create a folder 
         string OutputDir = Path.Combine(FolderName, string.Concat(DateTime.Now.ToString("MM-dd-yyyy"), FileName));
@@ -88,7 +82,7 @@ public class DataCollection : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "Trial Number\t" + "Target Position\t" + "Trigger Position\t" + "Start Time\t" + "End Time\t" + "Overlap Type\t" + "Presentation Radius\t" + "Presentation Angle\t" + Environment.NewLine
+            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" + "Presentation Radius\t" + "Presentation Angle\t" + Environment.NewLine
                         );
 
 
@@ -100,13 +94,21 @@ public class DataCollection : MonoBehaviour
 
     void WriteFile()
     {
+        trialNumber = controlLevel.trials;
+        triggerPosition = new Vector3(controlLevel.trigger_x, controlLevel.trigger_y, controlLevel.trigger_z);
+        targetPosition = new Vector3(controlLevel.target_x, controlLevel.target_y, controlLevel.target_z);
+        startTime = controlLevel.startTime;
+        endTime = controlLevel.endTime;
+        testObject = controlLevel.testobject;
+        radius = controlLevel.radius;
+        angle = controlLevel.angle;
+
         stringBuilder.Length = 0;
         stringBuilder.Append(
-                    trialNumber.ToString() + "\t"
-                    + targetPosition.ToString() + "\t"
+                    trialNumber.ToString() + "\t\t"
+                    + targetPosition.ToString() + "\t" 
                     + triggerPosition.ToString() + "\t"
                     + startTime.ToString() + "\t"
-                    + endTime.ToString() + "\t"
                     + testObject.ToString() + "\t"
                     + radius.ToString() + "\t"
                     + angle.ToString() + "\t" +
@@ -119,7 +121,7 @@ public class DataCollection : MonoBehaviour
 
     public void Update()
     {
-        if (controlLevel.data = false)
+        if (triggerPull.trigger == true)
         {
             WriteFile();
         }

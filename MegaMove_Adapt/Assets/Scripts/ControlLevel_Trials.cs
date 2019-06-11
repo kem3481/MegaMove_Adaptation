@@ -23,6 +23,7 @@ public class ControlLevel_Trials : ControlLevel
     public string startTime;
     public string endTime;
 
+    public int numberoftrials = 5;
     private Verify verifyPositions; // script
     private Controls controls; // script
     private ControllerCheck controller; // scripts
@@ -70,7 +71,7 @@ public class ControlLevel_Trials : ControlLevel
         begin.AddStateInitializationMethod(() =>
         {
             data = false;
-            string startTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)
             {
                 score = 0;
@@ -107,7 +108,7 @@ public class ControlLevel_Trials : ControlLevel
             {
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
                 testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 2.75f, 2.5f);
-                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
+                testobject.transform.eulerAngles = new Vector3(0f, angle, angle);
             }
 
             penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
@@ -172,7 +173,7 @@ public class ControlLevel_Trials : ControlLevel
             Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
             Debug.Log("Score: " + score);
 
-            if (trials < 90)
+            if (trials < numberoftrials)
             {
                 end = 1;
             }
@@ -187,7 +188,6 @@ public class ControlLevel_Trials : ControlLevel
         feedback.AddStateInitializationMethod(() =>
         {
             endText.SetActive(true);
-            string endTime = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
             data = true;
         });
 

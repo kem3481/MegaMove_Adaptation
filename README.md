@@ -1,6 +1,6 @@
-## MegaMove_Adaptation
+# MegaMove_Adaptation
 
-# Script Locations
+## Script Locations
 Verify, Controls, PointSYstem,and ControlLevel_Trials area all on the ControlLevels game object 
 
 Trigger pull is on the controller game objects 
@@ -11,6 +11,6 @@ ControllerCheck is on the controller position game obeject which is a child of s
 
 FlipNormals is on the background game object 
 
-# At Start
+## At Start
 set controllevels test as either left or right controller
 set controllevels gamecontroller as corresponding sphere

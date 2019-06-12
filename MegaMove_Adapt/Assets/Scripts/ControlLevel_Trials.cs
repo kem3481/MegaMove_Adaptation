@@ -133,7 +133,7 @@ public class ControlLevel_Trials : ControlLevel
                 //testobject = Instantiate(trialTypes[UnityEngine.Random.Range(0, 449)]);
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
-                testobject.transform.eulerAngles = new Vector3(0f, (polarAngle * Mathf.Rad2Deg), 0f);
+                testobject.transform.eulerAngles = new Vector3(0f, (polarAngle * Mathf.Rad2Deg), (polarAngle * Mathf.Rad2Deg));
             }
 
         penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");

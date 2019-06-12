@@ -27,7 +27,7 @@ public class DataCollection : MonoBehaviour
     [System.NonSerialized]
     public GameObject testObject;
     [System.NonSerialized]
-    public float angle, radius;
+    public float elevation, polar, radius;
     [System.NonSerialized]
     public ControlLevel_Trials controlLevel;
     [System.NonSerialized]
@@ -82,7 +82,7 @@ public class DataCollection : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" + "Presentation Radius\t" + "Presentation Angle\t" + Environment.NewLine
+            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" + "Presentation Radius\t" + "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
                         );
 
 
@@ -101,7 +101,8 @@ public class DataCollection : MonoBehaviour
         endTime = controlLevel.endTime;
         testObject = controlLevel.testobject;
         radius = controlLevel.radius;
-        angle = controlLevel.angle;
+        polar = controlLevel.polarAngle;
+        elevation = controlLevel.elevationAngle;
 
         stringBuilder.Length = 0;
         stringBuilder.Append(
@@ -111,7 +112,8 @@ public class DataCollection : MonoBehaviour
                     + startTime.ToString() + "\t"
                     + testObject.ToString() + "\t"
                     + radius.ToString() + "\t"
-                    + angle.ToString() + "\t" +
+                    + polar.ToString() + "\t" 
+                    + elevation.ToString() + "\t" +
                     Environment.NewLine
                 );
         writeString = stringBuilder.ToString();

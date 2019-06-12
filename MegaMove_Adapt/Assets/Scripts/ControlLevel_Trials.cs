@@ -38,7 +38,7 @@ public class ControlLevel_Trials : ControlLevel
     [System.NonSerialized]
     public GameObject testobject;
     [System.NonSerialized]
-    public float angle;
+    public float polarAngle, elevationAngle, a;
     [System.NonSerialized]
     public float radius, trigger_x, trigger_y, trigger_z, target_x, target_y, target_z, penalty_x, penalty_y, penalty_z;
 
@@ -100,20 +100,20 @@ public class ControlLevel_Trials : ControlLevel
             controllerPosition.SetActive(false);
             trials++;
 
-            angle = UnityEngine.Random.RandomRange(0, 359);
+            polarAngle = (UnityEngine.Random.RandomRange(0, 359)) * (Mathf.PI / 180);
+            elevationAngle = (UnityEngine.Random.RandomRange(0, 359)) * (Mathf.PI / 180);
             radius = controls.radii[UnityEngine.Random.Range(0, 2)];
+            a = (radius * Mathf.Cos(elevationAngle));
             if (testobject == null)
             {
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
-                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 1f, .5f);
-                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
+                testobject.transform.position = controllerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
             }
 
             penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
 
             Debug.Log("Overlap: " + testobject);
             Debug.Log("Radius: " + radius);
-            Debug.Log("Angle: " + angle);
             Debug.Log("Trial: " + trials);
         });
         stimOn.AddTimer(.1f, collectResponse);

@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
-    private float smallRadius = .1f;
-    private float mediumRadius = .2f;
-    private float largeRadius =  .3f;
+    private float small = 75f;
+    private float medium = 60f;
+    private float large =  45f;
     
     public GameObject smallOverlap;
     public GameObject mediumOverlap;
     public GameObject largeOverlap;
 
     public GameObject[] targets;
-    public float[] radii;
+    public float[] angles;
     
     // Start is called before the first frame update
     void Start()
@@ -25,10 +25,10 @@ public class Controls : MonoBehaviour
         targets[2] = largeOverlap;
 
         // List of radii
-        radii = new float[3];
-        radii[0] = smallRadius;
-        radii[1] = mediumRadius;
-        radii[2] = largeRadius;
+        angles = new float[3];
+        angles[0] = small;
+        angles[1] = medium;
+        angles[2] = large;
       
     }
     

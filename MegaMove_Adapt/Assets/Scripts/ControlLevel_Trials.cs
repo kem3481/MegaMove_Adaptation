@@ -23,7 +23,7 @@ public class ControlLevel_Trials : ControlLevel
     public string startTime;
     public string endTime;
 
-    public int numberoftrials = 5;
+    public int numberoftrials = 20;
     private Verify verifyPositions; // script
     private Controls controls; // script
     private ControllerCheck controller; // scripts
@@ -34,6 +34,10 @@ public class ControlLevel_Trials : ControlLevel
     private int trialScore;
     private int end = 0;
     public bool data;
+    private int j, i;
+
+    public GameObject[] cases;
+    public GameObject[] trialTypes;
 
     [System.NonSerialized]
     public GameObject testobject;
@@ -77,7 +81,10 @@ public class ControlLevel_Trials : ControlLevel
 
             trialScore = 0;
             controllerPosition.SetActive(true);
-            beginText.SetActive(true);
+            if (trials < 1)
+            {
+                beginText.SetActive(true);
+            }
             endText.SetActive(false);
 
             trigger_x = 0;
@@ -89,31 +96,56 @@ public class ControlLevel_Trials : ControlLevel
             penalty_x = 0;
             penalty_y = 0;
             penalty_z = 0;
-            
+
+
+            /*for (int i = 0; i == 2; i++)
+            {
+                for (int j = 0; j == 2; j++)
+                {
+                    cases[j + i] = controls.targets[j];
+                }
+            }
+
+            for (int j = 0; j < 9; j++)
+            {
+                for (int i = 0; i < 50; i++)
+                {
+                    trialTypes[i + j] = cases[j];
+                }
+            }*/
+
         });
         begin.SpecifyStateTermination(() => verifyPositions.positionsCorrect, stimOn);
         begin.AddDefaultTerminationMethod(() => beginText.SetActive(false));
 
         stimOn.AddStateInitializationMethod(() =>
         {
-            beginText.SetActive(false);
-            controllerPosition.SetActive(false);
-            trials++;
+        beginText.SetActive(false);
+        controllerPosition.SetActive(false);
+        trials++;
 
-            polarAngle = (UnityEngine.Random.RandomRange(0, 359)) * (Mathf.PI / 180);
-            elevationAngle = (UnityEngine.Random.RandomRange(0, 359)) * (Mathf.PI / 180);
-            radius = controls.radii[UnityEngine.Random.Range(0, 2)];
-            a = (radius * Mathf.Cos(elevationAngle));
-            if (testobject == null)
-            {
+        elevationAngle = ((controls.angles[UnityEngine.Random.Range(0,2)]) * (Mathf.Deg2Rad));
+        polarAngle = (Mathf.Deg2Rad * UnityEngine.Random.Range(0, 359));
+        radius = .5f;
+        a = (radius * Mathf.Cos(elevationAngle));
+        if (testobject == null)
+        {
+                //testobject = Instantiate(trialTypes[UnityEngine.Random.Range(0, 449)]);
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
-                testobject.transform.position = controllerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
+                testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
+                testobject.transform.eulerAngles = new Vector3(0f, (polarAngle * Mathf.Rad2Deg), 0f);
             }
 
-            penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
+        penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
+
+        /*if (testobject == trialTypes[i])
+        {
+            
+        }*/
 
             Debug.Log("Overlap: " + testobject);
-            Debug.Log("Radius: " + radius);
+            Debug.Log("Polar: " + polarAngle);
+            Debug.Log("Elevation: " + elevationAngle);
             Debug.Log("Trial: " + trials);
         });
         stimOn.AddTimer(.1f, collectResponse);

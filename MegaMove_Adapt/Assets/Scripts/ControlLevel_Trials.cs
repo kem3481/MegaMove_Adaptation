@@ -29,7 +29,6 @@ public class ControlLevel_Trials : ControlLevel
     private ControllerCheck controller; // scripts
     private HeadCheck head; // scripts
     private TriggerPull triggered; // scripts
-    private PointSystem points; // scripts
     public int trials = 0; // number of total trials
     private int score; // player score
     private int trialScore;
@@ -64,7 +63,6 @@ public class ControlLevel_Trials : ControlLevel
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
         triggered = test.GetComponent<TriggerPull>();
-        points = manager.GetComponent<PointSystem>();
 
         scoreDisplay.text = "Score: " + score;
 
@@ -107,8 +105,8 @@ public class ControlLevel_Trials : ControlLevel
             if (testobject == null)
             {
                 testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
-                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 2.75f, 2.5f);
-                testobject.transform.eulerAngles = new Vector3(0f, angle, angle);
+                testobject.transform.position = new Vector3((radius * Mathf.Cos(angle * (Mathf.PI / 180))), (radius * Mathf.Sin(angle * (Mathf.PI / 180))) + 1f, .5f);
+                testobject.transform.eulerAngles = new Vector3(0f, 0f, angle);
             }
 
             penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
@@ -143,9 +141,9 @@ public class ControlLevel_Trials : ControlLevel
 
         scoreState.AddStateInitializationMethod(() =>
         {
-            if ((trigger_x > (target_x - .1f)) && (trigger_x < (target_x + .1f)) &&
-               (trigger_y > (target_y - .1f)) && (trigger_y < (target_y + .1f)) &&
-               (trigger_z > (target_z - .1f)) && (trigger_z < (target_z + .1f)))
+            if ((trigger_x > (target_x - .05f)) && (trigger_x < (target_x + .05f)) &&
+               (trigger_y > (target_y - .05f)) && (trigger_y < (target_y + .05f)) &&
+               (trigger_z > (target_z - .05f)) && (trigger_z < (target_z + .05f)))
             {
                 trialScore = 100;
             }
@@ -154,9 +152,9 @@ public class ControlLevel_Trials : ControlLevel
                 trialScore = 0;
             }
 
-            if ((trigger_x > (penalty_x - .1f)) && (trigger_x < (penalty_x + .1f)) &&
-               (trigger_y > (penalty_y - .1f)) && (trigger_y < (penalty_y + .1f)) &&
-               (trigger_z > (penalty_z - .1f)) && (trigger_z < (penalty_z + .1f)))
+            if ((trigger_x > (penalty_x - .05f)) && (trigger_x < (penalty_x + .05f)) &&
+               (trigger_y > (penalty_y - .05f)) && (trigger_y < (penalty_y + .05f)) &&
+               (trigger_z > (penalty_z - .05f)) && (trigger_z < (penalty_z + .05f)))
             {
                 trialScore = -100;
             }

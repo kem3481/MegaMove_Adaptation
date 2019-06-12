@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
-    private float smallRadius = .5f;
-    private float mediumRadius = 1f;
-    private float largeRadius = 1.5f;
+    private float smallRadius = .15f;
+    private float mediumRadius = .30f;
+    private float largeRadius =  .45f;
     
     public GameObject smallOverlap;
     public GameObject mediumOverlap;

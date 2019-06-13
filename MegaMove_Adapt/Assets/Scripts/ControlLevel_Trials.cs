@@ -15,6 +15,7 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject playerPosition; // headset poisiton column
     public GameObject gamecontroller; // Set to which controller is being used (icon)
     public GameObject test; // leftcontroller or right controller in heirarchy
+    public GameObject target;
     public GameObject manager; // control levels game object, holding all scirpts
     public GameObject beginText; // instructions canvas
     public GameObject endText; // thank you for playing canvas
@@ -34,10 +35,12 @@ public class ControlLevel_Trials : ControlLevel
     private int trialScore;
     private int end = 0;
     public bool data;
-    private int j, i;
+    private int j, i, k = 0;
+    private int orientation;
+    private int random;
 
-    public GameObject[] cases;
-    public GameObject[] trialTypes;
+    public int cases;
+    public int[] trialTypes;
 
     [System.NonSerialized]
     public GameObject testobject;
@@ -96,23 +99,7 @@ public class ControlLevel_Trials : ControlLevel
             penalty_x = 0;
             penalty_y = 0;
             penalty_z = 0;
-
-
-            /*for (int i = 0; i == 2; i++)
-            {
-                for (int j = 0; j == 2; j++)
-                {
-                    cases[j + i] = controls.targets[j];
-                }
-            }
-
-            for (int j = 0; j < 9; j++)
-            {
-                for (int i = 0; i < 50; i++)
-                {
-                    trialTypes[i + j] = cases[j];
-                }
-            }*/
+            
 
         });
         begin.SpecifyStateTermination(() => verifyPositions.positionsCorrect, stimOn);
@@ -124,16 +111,24 @@ public class ControlLevel_Trials : ControlLevel
         controllerPosition.SetActive(false);
         trials++;
 
-        elevationAngle = ((controls.angles[UnityEngine.Random.Range(0,2)]) * (Mathf.Deg2Rad));
+        orientation = UnityEngine.Random.Range(0, 2);
+        //elevationAngle = ((controls.angles[UnityEngine.Random.Range(0,2)]) * (Mathf.Deg2Rad));
         polarAngle = (Mathf.Deg2Rad * UnityEngine.Random.Range(0, 359));
         radius = .5f;
         a = (radius * Mathf.Cos(elevationAngle));
         if (testobject == null)
         {
-                //testobject = Instantiate(trialTypes[UnityEngine.Random.Range(0, 449)]);
-                testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
+                testobject = Instantiate(target);
+                //testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
-                testobject.transform.eulerAngles = new Vector3(0f, (polarAngle * Mathf.Rad2Deg), (polarAngle * Mathf.Rad2Deg));
+                if (orientation == 1)
+                {
+                    testobject.transform.eulerAngles = new Vector3(0f, -polarAngle * Mathf.Rad2Deg, 0f);
+                }
+                if (orientation == 0)
+                {
+                    testobject.transform.eulerAngles = new Vector3(0f,( -polarAngle * Mathf.Rad2Deg) + 180, 0f);
+                }
             }
 
         penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");

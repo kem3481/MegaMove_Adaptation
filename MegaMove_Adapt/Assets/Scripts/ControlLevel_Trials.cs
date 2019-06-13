@@ -38,6 +38,7 @@ public class ControlLevel_Trials : ControlLevel
     private int j, i, k = 0;
     private int orientation;
     private int random;
+    private float Timer;
 
     public int cases;
     public int[] trialTypes;
@@ -62,10 +63,11 @@ public class ControlLevel_Trials : ControlLevel
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
         State stimOn = new State("Stimulus"); // Step 3
         State collectResponse = new State("CollectResponse"); // Step 4
+        State penaltyState = new State("TimeOutPenalty");
         State scoreState = new State("Score");
         State destination = new State("Destination"); // sends the script either back to begin or to feeback
         State feedback = new State("Feedback"); // Step 5
-        AddActiveStates(new List<State> { begin, stimOn, collectResponse, scoreState, destination, feedback });
+        AddActiveStates(new List<State> { begin, stimOn, collectResponse, penaltyState, scoreState, destination, feedback });
         
         // Accessing other scripts
         verifyPositions = manager.GetComponent<Verify>();
@@ -161,7 +163,11 @@ public class ControlLevel_Trials : ControlLevel
             Debug.Log("Trial: " + trials);
         });
         stimOn.AddTimer(.1f, collectResponse);
-        
+
+        collectResponse.AddStateInitializationMethod(() =>
+        {
+            Timer = 0;
+        });
         collectResponse.AddUpdateMethod(() =>
         {
 
@@ -179,9 +185,19 @@ public class ControlLevel_Trials : ControlLevel
 
                 Destroy(testobject);
             }
+
+            Timer += Time.deltaTime;
             
         });
         collectResponse.SpecifyStateTermination(() => testobject == null, scoreState);
+        collectResponse.SpecifyStateTermination(() => Timer > 5f, penaltyState);
+
+        penaltyState.AddStateInitializationMethod(() =>
+        {
+            Destroy(testobject);
+            trialScore = -500;
+        });
+        penaltyState.AddTimer(.01f, destination);
 
         scoreState.AddStateInitializationMethod(() =>
         {

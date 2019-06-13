@@ -116,7 +116,18 @@ public class ControlLevel_Trials : ControlLevel
         polarAngle = (Mathf.Deg2Rad * UnityEngine.Random.Range(0, 359));
         radius = .5f;
         a = (radius * Mathf.Cos(elevationAngle));
-        if (testobject == null)
+        random = controls.trialTypes[UnityEngine.Random.Range(0, controls.trialTypes.Length)];
+        for (int i = 0; i < 9; i++)
+        {
+            if (random == i)
+            {
+                elevationAngle = controls.allAngles[i] * (Mathf.Deg2Rad);
+                target = controls.allTargets[i];
+            }
+        }
+
+
+            if (testobject == null)
         {
                 testobject = Instantiate(target);
                 //testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);

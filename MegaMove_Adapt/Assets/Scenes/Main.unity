@@ -112,7 +112,138 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!43 &45617212
+--- !u!1 &346914577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346914578}
+  - component: {fileID: 346914579}
+  - component: {fileID: 346914580}
+  - component: {fileID: 346914582}
+  - component: {fileID: 346914583}
+  m_Layer: 0
+  m_Name: ControlLevels
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &346914578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346914577}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1514229298}
+  - {fileID: 1407603043}
+  - {fileID: 1981548504}
+  - {fileID: 1327436162}
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &346914579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346914577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f8663236698cec42b1dcb0f21798913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ControlLevelName: Trials
+  Terminated: 0
+  UpdatePreviousStateTiming: 0
+  isMainLevel: 1
+  CallDefineLevelAutomatically: 1
+  quitApplicationAtEnd: 1
+  DebugActive: 0
+  controllerPosition: {fileID: 629416666}
+  playerPosition: {fileID: 899453998}
+  gamecontroller: {fileID: 880615938}
+  test: {fileID: 1298635923}
+  target: {fileID: 0}
+  manager: {fileID: 346914577}
+  beginText: {fileID: 1981548500}
+  endText: {fileID: 1407603042}
+  scoreDisplay: {fileID: 1576178397}
+  startTime: 
+  endTime: 
+  numberoftrials: 20
+  trials: 0
+  data: 0
+  cases: 0
+  trialTypes: 
+  handType: 0
+  squeezeAction:
+    actionPath: /actions/default/in/Squeeze
+    needsReinit: 0
+--- !u!114 &346914580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346914577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29a6c5e9827d5cb488e647bbc9da11f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smallOverlap: {fileID: 3772364243798835380, guid: 05556e232b974304a83750f11e520203,
+    type: 3}
+  mediumOverlap: {fileID: 8916278321584297692, guid: a99902c3dcf6ad946b4077a3368ae6e4,
+    type: 3}
+  largeOverlap: {fileID: 1721368749080948912, guid: aa9bee78ceba7ce49964cbd4dcc77f53,
+    type: 3}
+  targets: []
+  allTargets: []
+  angles: []
+  allAngles: []
+  trialTypes: 
+--- !u!114 &346914582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346914577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24fe9e8c240fa204bbe9d35922d8bcc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  positionsCorrect: 0
+  hand: {fileID: 629416666}
+  headset: {fileID: 899453998}
+--- !u!114 &346914583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346914577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6872ab2d28d6d044cbec372436d2a0bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FolderName: C://Desktop//MegaMove_Adapt
+  FileName: EndPointsData
+  manager: {fileID: 346914577}
+  startWriting: 0
+--- !u!43 &513477361
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -272,133 +403,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &346914577
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 346914578}
-  - component: {fileID: 346914579}
-  - component: {fileID: 346914580}
-  - component: {fileID: 346914582}
-  - component: {fileID: 346914583}
-  m_Layer: 0
-  m_Name: ControlLevels
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &346914578
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346914577}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1514229298}
-  - {fileID: 1407603043}
-  - {fileID: 1981548504}
-  - {fileID: 1327436162}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &346914579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346914577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f8663236698cec42b1dcb0f21798913, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ControlLevelName: Trials
-  Terminated: 0
-  UpdatePreviousStateTiming: 0
-  isMainLevel: 1
-  CallDefineLevelAutomatically: 1
-  quitApplicationAtEnd: 1
-  DebugActive: 0
-  controllerPosition: {fileID: 629416666}
-  playerPosition: {fileID: 899453998}
-  gamecontroller: {fileID: 880615938}
-  test: {fileID: 1298635923}
-  manager: {fileID: 346914577}
-  beginText: {fileID: 1981548500}
-  endText: {fileID: 1407603042}
-  scoreDisplay: {fileID: 1576178397}
-  startTime: 
-  endTime: 
-  numberoftrials: 20
-  trials: 0
-  data: 0
-  cases: []
-  trialTypes: []
-  handType: 0
-  squeezeAction:
-    actionPath: /actions/default/in/Squeeze
-    needsReinit: 0
---- !u!114 &346914580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346914577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29a6c5e9827d5cb488e647bbc9da11f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  smallOverlap: {fileID: 3772364243798835380, guid: 05556e232b974304a83750f11e520203,
-    type: 3}
-  mediumOverlap: {fileID: 8916278321584297692, guid: a99902c3dcf6ad946b4077a3368ae6e4,
-    type: 3}
-  largeOverlap: {fileID: 1721368749080948912, guid: aa9bee78ceba7ce49964cbd4dcc77f53,
-    type: 3}
-  targets: []
-  angles: []
---- !u!114 &346914582
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346914577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24fe9e8c240fa204bbe9d35922d8bcc6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  positionsCorrect: 0
-  hand: {fileID: 629416666}
-  headset: {fileID: 899453998}
---- !u!114 &346914583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346914577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6872ab2d28d6d044cbec372436d2a0bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FolderName: C://Desktop//MegaMove_Adapt
-  FileName: EndPointsData
-  manager: {fileID: 346914577}
-  startWriting: 0
 --- !u!1 &564116360
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   headPosition: 0
---- !u!21 &1022065114
+--- !u!21 &1073723305
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -1257,7 +1261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1514229297}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.75, z: -1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 629416667}
@@ -1430,11 +1434,11 @@ PrefabInstance:
     - target: {fileID: 2348914, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1022065114}
+      objectReference: {fileID: 1073723305}
     - target: {fileID: 3380982, guid: 4d293c8e162f3874b982baadd71153d2, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 45617212}
+      objectReference: {fileID: 513477361}
     - target: {fileID: 20000014031267948, guid: 4d293c8e162f3874b982baadd71153d2,
         type: 3}
       propertyPath: m_ClearFlags

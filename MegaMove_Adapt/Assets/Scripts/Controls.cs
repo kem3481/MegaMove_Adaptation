@@ -19,9 +19,6 @@ public class Controls : MonoBehaviour
     private int i, j, k;
 
     private ControlLevel_Trials controls;
-    public int cases;
-    public float elevationAngle;
-    public GameObject target;
 
     public int[] trialTypes;
 
@@ -67,25 +64,14 @@ public class Controls : MonoBehaviour
 
         trialTypes = new int[450];
 
-        for (int i = 0; i < 9; i++)
-        {
-            if (cases == i)
-            {
-                elevationAngle = allAngles[i] * (Mathf.Deg2Rad);
-                target = allTargets[i];
-            }
-        }
-
-       /* for (int j = 0; j < 450; j += 49)
+        for (int j = 0; j < 9; j ++)
         {
             for (int i = 0; i < 50; i++)
             {
-                trialTypes[i + j] = (j / 49);
+                trialTypes[i + j*49] = j;
             }
-        }*/
-
-
-        trialTypes[0] = 0
+        }
+        
     }
     
 }

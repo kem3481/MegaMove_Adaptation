@@ -91,9 +91,13 @@ public class ControlLevel_Trials : ControlLevel
 
             trialScore = 0;
             controllerPosition.SetActive(true);
-            if (trials < 1)
+            if (trials == 0)
             {
                 beginText.SetActive(true);
+            }
+            else
+            {
+                beginText.SetActive(false);
             }
             endText.SetActive(false);
 

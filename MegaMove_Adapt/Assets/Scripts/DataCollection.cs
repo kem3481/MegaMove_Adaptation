@@ -13,7 +13,7 @@ using System.Text;
 /// </remark>
 public class DataCollection : MonoBehaviour
 {
-    public string FolderName = "C://Users//performlab-admin//Desktop//MegaMove_Adapt";
+    public string FolderName = "This PC//C://Desktop//MegaMove";
     public string FileName = "EndPointsData";
     private string OutputDir;
 
@@ -59,7 +59,6 @@ public class DataCollection : MonoBehaviour
         // create a file to record data
         String trialOutput = Path.Combine(OutputDir, DateTime.Now.ToString("yyyy-MM-dd-HH-mm") + "_Results.txt");
         trialStreams = new FileStream(trialOutput, FileMode.Create, FileAccess.Write);
-
 
         //Call the function below to write the column names
         WriteHeader();

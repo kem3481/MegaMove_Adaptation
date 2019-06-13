@@ -82,7 +82,7 @@ public class DataCollection : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" + "Presentation Radius\t" + "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
+            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" +  "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
                         );
 
 
@@ -111,7 +111,6 @@ public class DataCollection : MonoBehaviour
                     + triggerPosition.ToString() + "\t"
                     + startTime.ToString() + "\t"
                     + testObject.ToString() + "\t"
-                    + radius.ToString() + "\t"
                     + polar.ToString() + "\t" 
                     + elevation.ToString() + "\t" +
                     Environment.NewLine

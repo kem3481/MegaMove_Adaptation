@@ -42,6 +42,9 @@ public class ControlLevel_Trials : ControlLevel
     public int cases;
     public int[] trialTypes;
 
+    private GameObject rightController;
+    private GameObject leftController;
+
     [System.NonSerialized]
     public GameObject testobject;
     [System.NonSerialized]
@@ -70,6 +73,8 @@ public class ControlLevel_Trials : ControlLevel
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
         triggered = test.GetComponent<TriggerPull>();
+        rightController = GameObject.FindGameObjectWithTag("rightController");
+        leftController = GameObject.FindGameObjectWithTag("leftController");
 
         scoreDisplay.text = "Score: " + score;
 
@@ -100,6 +105,14 @@ public class ControlLevel_Trials : ControlLevel
             penalty_y = 0;
             penalty_z = 0;
             
+            if (gamecontroller == rightController)
+            {
+                leftController.SetActive(false);
+            }
+            if (gamecontroller == leftController)
+            {
+                rightController.SetActive(false);
+            }
 
         });
         begin.SpecifyStateTermination(() => verifyPositions.positionsCorrect, stimOn);
@@ -112,7 +125,6 @@ public class ControlLevel_Trials : ControlLevel
         trials++;
 
         orientation = UnityEngine.Random.Range(0, 2);
-        //elevationAngle = ((controls.angles[UnityEngine.Random.Range(0,2)]) * (Mathf.Deg2Rad));
         polarAngle = (Mathf.Deg2Rad * UnityEngine.Random.Range(0, 359));
         radius = .5f;
         a = (radius * Mathf.Cos(elevationAngle));
@@ -130,7 +142,6 @@ public class ControlLevel_Trials : ControlLevel
             if (testobject == null)
         {
                 testobject = Instantiate(target);
-                //testobject = Instantiate(controls.targets[UnityEngine.Random.Range(0, 2)]);
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
                 if (orientation == 1)
                 {
@@ -143,12 +154,7 @@ public class ControlLevel_Trials : ControlLevel
             }
 
         penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
-
-        /*if (testobject == trialTypes[i])
-        {
-            
-        }*/
-
+  
             Debug.Log("Overlap: " + testobject);
             Debug.Log("Polar: " + polarAngle * Mathf.Rad2Deg);
             Debug.Log("Elevation: " + elevationAngle * Mathf.Rad2Deg);
@@ -196,6 +202,7 @@ public class ControlLevel_Trials : ControlLevel
             {
                 trialScore = -100;
             }
+
             
         });
         scoreState.AddTimer(1f, destination);

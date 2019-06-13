@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
-    private float small = 75f;
-    private float medium = 60f;
-    private float large =  45f;
+    private float small = 85f;
+    private float medium = 80f;
+    private float large =  75f;
     
     public GameObject smallOverlap;
     public GameObject mediumOverlap;

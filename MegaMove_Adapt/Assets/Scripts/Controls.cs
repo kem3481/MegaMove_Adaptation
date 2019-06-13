@@ -62,13 +62,13 @@ public class Controls : MonoBehaviour
         allTargets[7] = largeOverlap;
         allTargets[8] = largeOverlap;
 
-        trialTypes = new int[450];
+        trialTypes = new int[180];
 
         for (int j = 0; j < 9; j ++)
         {
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 20; i++)
             {
-                trialTypes[i + j*49] = j;
+                trialTypes[i + j*19] = j;
             }
         }
         

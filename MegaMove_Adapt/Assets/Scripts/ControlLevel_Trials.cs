@@ -144,8 +144,8 @@ public class ControlLevel_Trials : ControlLevel
         }*/
 
             Debug.Log("Overlap: " + testobject);
-            Debug.Log("Polar: " + polarAngle);
-            Debug.Log("Elevation: " + elevationAngle);
+            Debug.Log("Polar: " + polarAngle * Mathf.Rad2Deg);
+            Debug.Log("Elevation: " + elevationAngle * Mathf.Rad2Deg);
             Debug.Log("Trial: " + trials);
         });
         stimOn.AddTimer(.1f, collectResponse);
@@ -173,9 +173,9 @@ public class ControlLevel_Trials : ControlLevel
 
         scoreState.AddStateInitializationMethod(() =>
         {
-            if ((trigger_x > (target_x - .05f)) && (trigger_x < (target_x + .05f)) &&
-               (trigger_y > (target_y - .05f)) && (trigger_y < (target_y + .05f)) &&
-               (trigger_z > (target_z - .05f)) && (trigger_z < (target_z + .05f)))
+            if ((trigger_x > (target_x - .03f)) && (trigger_x < (target_x + .03f)) &&
+               (trigger_y > (target_y - .03f)) && (trigger_y < (target_y + .03f)) &&
+               (trigger_z > (target_z - .03f)) && (trigger_z < (target_z + .03f)))
             {
                 trialScore = 100;
             }
@@ -184,9 +184,9 @@ public class ControlLevel_Trials : ControlLevel
                 trialScore = 0;
             }
 
-            if ((trigger_x > (penalty_x - .05f)) && (trigger_x < (penalty_x + .05f)) &&
-               (trigger_y > (penalty_y - .05f)) && (trigger_y < (penalty_y + .05f)) &&
-               (trigger_z > (penalty_z - .05f)) && (trigger_z < (penalty_z + .05f)))
+            if ((trigger_x > (penalty_x - .03f)) && (trigger_x < (penalty_x + .03f)) &&
+               (trigger_y > (penalty_y - .03f)) && (trigger_y < (penalty_y + .03f)) &&
+               (trigger_z > (penalty_z - .03f)) && (trigger_z < (penalty_z + .03f)))
             {
                 trialScore = -100;
             }

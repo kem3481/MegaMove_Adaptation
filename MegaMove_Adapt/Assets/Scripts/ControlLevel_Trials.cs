@@ -21,6 +21,7 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject endText; // thank you for playing canvas
     public Text scoreDisplay;
     private GameObject penalty;
+    public GameObject fixationToggle;
     public string startTime;
     public string endTime;
 
@@ -39,6 +40,7 @@ public class ControlLevel_Trials : ControlLevel
     private int orientation;
     private int random;
     private float Timer;
+    private int fixation;
 
     public int cases;
     public int[] trialTypes;
@@ -75,13 +77,42 @@ public class ControlLevel_Trials : ControlLevel
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
         triggered = test.GetComponent<TriggerPull>();
+
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
+        fixationToggle = GameObject.FindGameObjectWithTag("Toggle");
 
         scoreDisplay.text = "Score: " + score;
 
         begin.AddStateInitializationMethod(() =>
         {
+            if (trials == 0)
+            {
+                fixation = UnityEngine.Random.Range(0, 1);
+            }
+
+            if (trials == 179 && fixationToggle == null)
+            {
+                fixationToggle.SetActive(true);
+            }
+
+            if (trials == 179 && fixationToggle != null)
+            {
+                fixationToggle.SetActive(false);
+            }
+
+            if (fixation == 0)
+            {
+                Debug.Log("Fixation on");
+                fixationToggle.SetActive(true);
+            }
+
+            if (fixation == 1)
+            {
+                Debug.Log("Fixation off");
+                fixationToggle.SetActive(false);
+            }
+
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)
@@ -122,6 +153,7 @@ public class ControlLevel_Trials : ControlLevel
 
         stimOn.AddStateInitializationMethod(() =>
         {
+        
         beginText.SetActive(false);
         controllerPosition.SetActive(false);
         trials++;

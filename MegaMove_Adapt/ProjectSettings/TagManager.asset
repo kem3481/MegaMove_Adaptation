@@ -15,6 +15,7 @@ TagManager:
   - endText
   - position
   - PenaltyonTarget
+  - Toggle
   layers:
   - Default
   - TransparentFX

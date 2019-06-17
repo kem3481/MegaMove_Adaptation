@@ -6,12 +6,13 @@ using System.Text;
 
 public class PositionLogger : MonoBehaviour
 {
-    public string FolderName = "This PC//C://Desktop//MegaMove";
-    public string FileName = "FramesData";
+    public string FolderName = "D:\\kem3481\\MEGAMOVE";
+    public string FileName = "Positions";
     private string OutputDir;
 
     //Things you want to write out, set them in the inspector
     public GameObject controller;
+    ////public GameObject gaze;
 
     //Gives user control over when to start and stop recording, trigger this with spacebar;
     public bool startWriting;
@@ -52,7 +53,7 @@ public class PositionLogger : MonoBehaviour
         //add header info
         stringBuilder.Append(
         DateTime.Now.ToString() + "\t" +
-        "The file contains frame by frame data of location for the controller position " + Environment.NewLine +
+        "The file contains frame by frame data of location for 2 tracked objects " + Environment.NewLine +
         "The coordinate system is in Unity world coordinates." + Environment.NewLine
         );
         stringBuilder.Append("-------------------------------------------------" +
@@ -60,7 +61,7 @@ public class PositionLogger : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "FrameNumber\t" + "StartTime\t" + "HandX\t" + "HandY\t" + "HandZ\t" + Environment.NewLine
+            "FrameNumber\t" + "StartTime\t" /* + "HeadX\t" + "HeadY\t" + "HeadZ\t"*/ + "HandX\t" + "HandY\t" + "HandZ\t" + Environment.NewLine
                         );
 
 
@@ -78,7 +79,10 @@ public class PositionLogger : MonoBehaviour
         stringBuilder.Append(
                     Time.frameCount + "\t"
                     + Time.time * 1000 + "\t"
-                    + controller.transform.position.x.ToString() + "\t"
+                    /*+ Object1.transform.position.x.ToString() + "\t"
+                    + Object1.transform.position.y.ToString() + "\t"
+                    + Object1.transform.position.z.ToString() + "\t"
+                    */+ controller.transform.position.x.ToString() + "\t"
                     + controller.transform.position.y.ToString() + "\t"
                     + controller.transform.position.z.ToString() + "\t" +
                     Environment.NewLine

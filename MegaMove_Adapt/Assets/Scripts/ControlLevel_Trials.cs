@@ -39,7 +39,7 @@ public class ControlLevel_Trials : ControlLevel
     private int orientation;
     private int random;
     private float Timer;
-
+    public int accuracy;
     public int cases;
     public int[] trialTypes;
 
@@ -82,7 +82,6 @@ public class ControlLevel_Trials : ControlLevel
 
         begin.AddStateInitializationMethod(() =>
         {
-            data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)
             {
@@ -206,6 +205,7 @@ public class ControlLevel_Trials : ControlLevel
                (trigger_z > (target_z - .03f)) && (trigger_z < (target_z + .03f)))
             {
                 trialScore = 100;
+                accuracy = 1;
             }
             else
             {
@@ -217,6 +217,7 @@ public class ControlLevel_Trials : ControlLevel
                (trigger_z > (penalty_z - .03f)) && (trigger_z < (penalty_z + .03f)))
             {
                 trialScore = -100;
+                accuracy = -1;
             }
 
             
@@ -225,6 +226,7 @@ public class ControlLevel_Trials : ControlLevel
 
         destination.AddStateInitializationMethod(() =>
         {
+            data = true;
             score = score + trialScore;
             scoreDisplay.text = "Score: " + score;
 
@@ -240,6 +242,7 @@ public class ControlLevel_Trials : ControlLevel
             {
                 end = 2;
             }
+            data = false;
         });
         destination.SpecifyStateTermination(() => end == 1, begin);
         destination.SpecifyStateTermination(() => end == 2, feedback);
@@ -247,7 +250,6 @@ public class ControlLevel_Trials : ControlLevel
         feedback.AddStateInitializationMethod(() =>
         {
             endText.SetActive(true);
-            data = true;
         });
 
     }

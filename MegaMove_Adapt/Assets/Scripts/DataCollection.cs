@@ -127,7 +127,7 @@ public class DataCollection : MonoBehaviour
 
     public void Update()
     {
-        if (triggerPull.trigger == true)
+        if (controlLevel.data == true)
         {
             WriteFile();
         }

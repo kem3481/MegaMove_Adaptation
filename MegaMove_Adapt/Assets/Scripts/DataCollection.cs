@@ -85,7 +85,7 @@ public class DataCollection : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" +  "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
+            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" +  "Eccentricity\t" + "Elevation Angle\t"  + "Accuracy\t" + Environment.NewLine
                         );
 
 
@@ -106,6 +106,7 @@ public class DataCollection : MonoBehaviour
         radius = controlLevel.radius;
         polar = controlLevel.polarAngle;
         elevation = controlLevel.elevationAngle;
+        accuracy = controlLevel.accuracy;
 
         stringBuilder.Length = 0;
         stringBuilder.Append(
@@ -115,7 +116,8 @@ public class DataCollection : MonoBehaviour
                     + startTime.ToString() + "\t"
                     + testObject.ToString() + "\t"
                     + polar.ToString() + "\t" 
-                    + elevation.ToString() + "\t" +
+                    + elevation.ToString() + "\t" 
+                    + accuracy.ToString() + "\t" +
                     Environment.NewLine
                 );
         writeString = stringBuilder.ToString();

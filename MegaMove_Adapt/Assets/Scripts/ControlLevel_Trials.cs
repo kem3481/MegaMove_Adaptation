@@ -23,6 +23,8 @@ public class ControlLevel_Trials : ControlLevel
     private GameObject penalty;
     public string startTime;
     public string endTime;
+    public GameObject startingPositions;
+    private GameObject headset;
 
     public int numberoftrials = 20;
     private Verify verifyPositions; // script
@@ -77,11 +79,13 @@ public class ControlLevel_Trials : ControlLevel
         triggered = test.GetComponent<TriggerPull>();
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
+        headset = GameObject.FindGameObjectWithTag("Camera");
 
         scoreDisplay.text = "Score: " + score;
 
         begin.AddStateInitializationMethod(() =>
         {
+
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)

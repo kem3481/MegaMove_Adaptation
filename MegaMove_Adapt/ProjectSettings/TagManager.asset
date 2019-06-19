@@ -15,6 +15,9 @@ TagManager:
   - endText
   - position
   - PenaltyonTarget
+  - projectile
+  - FxTemporaire
+  - StartingPositions
   layers:
   - Default
   - TransparentFX

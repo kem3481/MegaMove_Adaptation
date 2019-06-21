@@ -21,7 +21,7 @@ public class DataCollection : MonoBehaviour
     [System.NonSerialized]
     public int trialNumber;
     [System.NonSerialized]
-    public Vector3 triggerPosition, targetPosition;
+    public Vector3 triggerPosition, targetPosition, penaltyPosition;
     [System.NonSerialized]
     public string startTime, endTime;
     [System.NonSerialized]
@@ -100,7 +100,7 @@ public class DataCollection : MonoBehaviour
         trialNumber = controlLevel.trials;
         triggerPosition = new Vector3(controlLevel.trigger_x, controlLevel.trigger_y, controlLevel.trigger_z);
         targetPosition = new Vector3(controlLevel.target_x, controlLevel.target_y, controlLevel.target_z);
-        penaltyPosition = new Vector3(controlLevel.penalty_x, contronLevel.penalty_y, controlLevel.penalty_z);
+        penaltyPosition = new Vector3(controlLevel.penalty_x, controlLevel.penalty_y, controlLevel.penalty_z);
         startTime = controlLevel.startTime;
         endTime = controlLevel.endTime;
         testObject = controlLevel.testobject;

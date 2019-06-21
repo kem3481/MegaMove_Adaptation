@@ -7,26 +7,11 @@ public class TriggerPull : MonoBehaviour
 {
     public bool trigger;
 
-    // Vive Control GameObjects
-    public SteamVR_Input_Sources handType;
-    public SteamVR_Action_Boolean squeezeAction;
-
-    // Update is called once per frame
-    void Update()
+    public void OnTriggerEnter(Collider other)
     {
-        bool GetSqueeze()
-        {
-            return squeezeAction.GetStateDown(handType);
-        }
-
-        if (GetSqueeze())
+        if (other.gameObject.CompareTag("leftController") || other.gameObject.CompareTag("rightController"))
         {
             trigger = true;
         }
-        else
-        {
-            trigger = false;
-        }
-
     }
 }

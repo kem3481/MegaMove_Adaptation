@@ -143,8 +143,6 @@ public class ControlLevel_Trials : ControlLevel
                 target = controls.allTargets[i];
             }
         }
-
-
             if (testobject == null)
         {
                 testobject = Instantiate(target);

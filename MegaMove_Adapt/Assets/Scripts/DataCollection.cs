@@ -85,7 +85,7 @@ public class DataCollection : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "Trial Number\t" + "Target Position\t\t" + "Trigger Position\t" + "Start Time\t" + "Overlap Type\t" +  "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
+            "Trial Number\t" + "Target Position X\t" + "Target Position Y\t" + "Target Position Z\t" + "Penalty Position X\t" + "Penalty Position Y\t" + "Penalty Position Z\t"+ "Collision Position X\t" + "Collision Position Y\t" + "Collision Position Z\t" + "Start Time\t" + "Overlap Type\t" +  "Polar Angle\t" + "Elevation Angle\t"  + Environment.NewLine
                         );
 
 
@@ -100,6 +100,7 @@ public class DataCollection : MonoBehaviour
         trialNumber = controlLevel.trials;
         triggerPosition = new Vector3(controlLevel.trigger_x, controlLevel.trigger_y, controlLevel.trigger_z);
         targetPosition = new Vector3(controlLevel.target_x, controlLevel.target_y, controlLevel.target_z);
+        penaltyPosition = new Vector3(controlLevel.penalty_x, contronLevel.penalty_y, controlLevel.penalty_z);
         startTime = controlLevel.startTime;
         endTime = controlLevel.endTime;
         testObject = controlLevel.testobject;
@@ -110,8 +111,15 @@ public class DataCollection : MonoBehaviour
         stringBuilder.Length = 0;
         stringBuilder.Append(
                     trialNumber.ToString() + "\t\t"
-                    + targetPosition.ToString() + "\t" 
-                    + triggerPosition.ToString() + "\t"
+                    + targetPosition.x.ToString() + "\t" 
+                    + targetPosition.y.ToString() + "\t" 
+                    + targetPosition.z.ToString() + "\t" 
+                    + penaltyPosition.x.ToString() + "\t" 
+                    + penaltyPosition.y.ToString() + "\t" 
+                    + penaltyPosition.z.ToString() + "\t" 
+                    + triggerPosition.x.ToString() + "\t"
+                    + triggerPosition.y.ToString() + "\t"
+                    + triggerPosition.z.ToString() + "\t"
                     + startTime.ToString() + "\t"
                     + testObject.ToString() + "\t"
                     + polar.ToString() + "\t" 

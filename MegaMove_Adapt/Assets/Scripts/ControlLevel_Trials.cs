@@ -39,7 +39,7 @@ public class ControlLevel_Trials : ControlLevel
     public bool data;
     private int j, i, k = 0;
     private int orientation;
-    private int random;
+    private int random1, random2;
     private float Timer;
 
     public int cases;
@@ -80,7 +80,8 @@ public class ControlLevel_Trials : ControlLevel
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
-
+        
+        trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
 
         begin.AddStateInitializationMethod(() =>
@@ -134,16 +135,30 @@ public class ControlLevel_Trials : ControlLevel
         polarAngle = (Mathf.Deg2Rad * UnityEngine.Random.Range(0, 359));
         radius = .5f;
         a = (radius * Mathf.Cos(elevationAngle));
-        random = controls.trialTypes[UnityEngine.Random.Range(0, controls.trialTypes.Length)];
+        
+        random2 = UnityEngine.Random.Range(0, trialTypes.Length);
+        random1 = trialTypes[random2];
         for (int i = 0; i < 9; i++)
         {
-            if (random == i)
+            if (random1 == i)
             {
                 elevationAngle = controls.allAngles[i] * (Mathf.Deg2Rad);
                 target = controls.allTargets[i];
             }
         }
-            if (testobject == null)
+        /* attempt at list removing
+        for (int i = 0; i < random2; i++)
+        {
+            trialTypes[i] = trialTypes[i];
+        }
+        for (int i = random2; i < trialTypes.Length - 1; i++)
+        {
+            trialTypes[i] = trialTypes[i+1];
+        }
+        
+        Array.Resize(ref trialTypes, trialTypes - 1);
+        */
+        if (testobject == null)
         {
                 testobject = Instantiate(target);
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));

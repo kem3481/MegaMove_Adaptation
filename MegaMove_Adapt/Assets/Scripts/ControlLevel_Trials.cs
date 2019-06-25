@@ -197,11 +197,12 @@ public class ControlLevel_Trials : ControlLevel
         collectResponse.AddUpdateMethod(() =>
         {
 
-            if (trigger.activeSelf == true && testobject == null)
+            if (trigger.activeSelf == true)
             {
                 trigger_x = gamecontroller.transform.position.x;
                 trigger_y = gamecontroller.transform.position.y;
                 trigger_z = gamecontroller.transform.position.z;
+                Destroy(testobject);
             }
 
             Timer += Time.deltaTime;

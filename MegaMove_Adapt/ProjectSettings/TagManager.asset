@@ -19,6 +19,7 @@ TagManager:
   - FxTemporaire
   - StartingPositions
   - Trigger
+  - Manager
   layers:
   - Default
   - TransparentFX

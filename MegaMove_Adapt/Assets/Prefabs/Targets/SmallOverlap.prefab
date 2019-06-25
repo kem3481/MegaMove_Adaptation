@@ -261,4 +261,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 002328fed56c88842815402e104150d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: 0
+  manager: {fileID: 0}

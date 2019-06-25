@@ -47,6 +47,7 @@ public class Verify : MonoBehaviour
         if (WaitTime > 100)
         {
             positionsCorrect = true;
+            WaitTime = 0;
         }
     }
 }

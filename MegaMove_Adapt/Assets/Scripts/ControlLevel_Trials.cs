@@ -81,12 +81,13 @@ public class ControlLevel_Trials : ControlLevel
         headset = GameObject.FindGameObjectWithTag("Camera");
 
         trigger = GameObject.FindGameObjectWithTag("Trigger");
-        trigger.SetActive(false);
+
         trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
 
         begin.AddStateInitializationMethod(() =>
         {
+            trigger.SetActive(false);
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)
@@ -136,8 +137,8 @@ public class ControlLevel_Trials : ControlLevel
         radius = .5f;
         a = (radius * Mathf.Cos(elevationAngle));
         
-        random2 = UnityEngine.Random.Range(0, trialTypes.Length);
-        random1 = trialTypes[random2];
+        random2 = UnityEngine.Random.Range(0, controls.trialTypes.Length);
+        random1 = controls.trialTypes[random2];
         for (int i = 0; i < 9; i++)
         {
             if (random1 == i)
@@ -161,6 +162,9 @@ public class ControlLevel_Trials : ControlLevel
         if (testobject == null)
         {
                 testobject = Instantiate(target);
+
+
+                penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
                 target_x = testobject.transform.localPosition.x;
                 target_y = testobject.transform.localPosition.y;
                 target_z = testobject.transform.localPosition.z;
@@ -177,8 +181,7 @@ public class ControlLevel_Trials : ControlLevel
                     testobject.transform.eulerAngles = new Vector3(0f,( -polarAngle * Mathf.Rad2Deg) + 180, 0f);
                 }
             }
-
-        penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
+        
   
             Debug.Log("Overlap: " + testobject);
             Debug.Log("Polar: " + polarAngle * Mathf.Rad2Deg);

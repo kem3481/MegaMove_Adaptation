@@ -7,7 +7,6 @@ public class TriggerPull : MonoBehaviour
     public void Start()
     {
         trigger = GameObject.FindGameObjectWithTag("Trigger");
-        trigger.SetActive(false);
     }
 
     public void OnTriggerEnter(Collider other)

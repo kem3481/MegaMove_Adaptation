@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class Controls : MonoBehaviour
 {
+    // Eccentricities
     private float small = 85f;
     private float medium = 80f;
     private float large =  75f;
     
+    // Prefabs
     public GameObject smallOverlap;
     public GameObject mediumOverlap;
     public GameObject largeOverlap;
 
+    // Lists of types
     public GameObject[] targets;
-    public GameObject[] allTargets;
     public float[] angles;
+    
+    // Lists used to generate cobination types
+    public GameObject[] allTargets;
     public float[] allAngles;
+    
+    // Loop integers
     private int i, j, k;
-
+    
+    // Accessing main script
     private ControlLevel_Trials controls;
 
+    // list of 20 of each trial type
     public int[] trialTypes;
 
     // Start is called before the first frame update

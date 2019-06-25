@@ -11,6 +11,7 @@ public class Verify : MonoBehaviour
     public GameObject headset;
     private ControllerCheck controller;
     private HeadCheck head;
+    private int WaitTime;
 
     private void Start()
     {
@@ -23,7 +24,7 @@ public class Verify : MonoBehaviour
     {
         if (head.headPosition == true && controller.handPosition == true)
         {
-            positionsCorrect = true;
+            WaitTime++;
         }
 
         if ((head.headPosition == false && controller.handPosition == true) ||
@@ -41,6 +42,11 @@ public class Verify : MonoBehaviour
         if (hand.activeSelf == false)
         {
             controller.handPosition = false;
+        }
+
+        if (WaitTime > 100)
+        {
+            positionsCorrect = true;
         }
     }
 }

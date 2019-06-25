@@ -32,7 +32,7 @@ public class DataCollection : MonoBehaviour
     public ControlLevel_Trials controlLevel;
     [System.NonSerialized]
     public TriggerPull triggerPull;
-
+    public GameObject trigger;
     public GameObject manager;
     
    
@@ -49,10 +49,8 @@ public class DataCollection : MonoBehaviour
 
     void Start()
     {
-        
 
-        controlLevel = manager.GetComponent<ControlLevel_Trials>();
-        triggerPull = controlLevel.test.GetComponent<TriggerPull>();
+       controlLevel = manager.GetComponent<ControlLevel_Trials>();
 
         // create a folder 
         string OutputDir = Path.Combine(FolderName, string.Concat(DateTime.Now.ToString("MM-dd-yyyy"), FileName));
@@ -110,18 +108,18 @@ public class DataCollection : MonoBehaviour
 
         stringBuilder.Length = 0;
         stringBuilder.Append(
-                    trialNumber.ToString() + "\t\t"
+                    trialNumber.ToString() + "\t\t" 
                     + targetPosition.x.ToString() + "\t" 
                     + targetPosition.y.ToString() + "\t" 
                     + targetPosition.z.ToString() + "\t" 
                     + penaltyPosition.x.ToString() + "\t" 
                     + penaltyPosition.y.ToString() + "\t" 
                     + penaltyPosition.z.ToString() + "\t" 
-                    + triggerPosition.x.ToString() + "\t"
+                    + triggerPosition.x.ToString() + "\t" 
                     + triggerPosition.y.ToString() + "\t"
                     + triggerPosition.z.ToString() + "\t"
-                    + startTime.ToString() + "\t"
-                    + testObject.ToString() + "\t"
+                    + startTime.ToString() + "\t" 
+                    + testObject.ToString() + "\t" 
                     + polar.ToString() + "\t" 
                     + elevation.ToString() + "\t" +
                     Environment.NewLine
@@ -133,7 +131,7 @@ public class DataCollection : MonoBehaviour
 
     public void Update()
     {
-        if (triggerPull.trigger == true)
+        if (trigger.activeSelf == true)
         {
             WriteFile();
         }

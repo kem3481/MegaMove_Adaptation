@@ -1,17 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Valve.VR;
+﻿using UnityEngine;
 
 public class TriggerPull : MonoBehaviour
 {
-    public bool trigger;
+    private GameObject trigger;
+
+    public void Start()
+    {
+        trigger = GameObject.FindGameObjectWithTag("Trigger");
+        trigger.SetActive(false);
+    }
 
     public void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("leftController") || other.gameObject.CompareTag("rightController"))
         {
-            trigger = true;
+            Destroy(this);
+            trigger.SetActive(true);
         }
     }
 }

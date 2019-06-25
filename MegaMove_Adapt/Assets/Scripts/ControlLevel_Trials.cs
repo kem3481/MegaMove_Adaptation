@@ -41,7 +41,7 @@ public class ControlLevel_Trials : ControlLevel
     private int orientation;
     private int random1, random2;
     private float Timer;
-
+    private GameObject trigger;
     public int cases;
     public int[] trialTypes;
 
@@ -76,17 +76,17 @@ public class ControlLevel_Trials : ControlLevel
         controls = manager.GetComponent<Controls>();
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
-        triggered = test.GetComponent<TriggerPull>();
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
-        
+
+        trigger = GameObject.FindGameObjectWithTag("Trigger");
+        trigger.SetActive(false);
         trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
 
         begin.AddStateInitializationMethod(() =>
         {
-
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
             if (trials == 0)
@@ -161,6 +161,12 @@ public class ControlLevel_Trials : ControlLevel
         if (testobject == null)
         {
                 testobject = Instantiate(target);
+                target_x = testobject.transform.localPosition.x;
+                target_y = testobject.transform.localPosition.y;
+                target_z = testobject.transform.localPosition.z;
+                penalty_x = penalty.transform.position.x;
+                penalty_y = penalty.transform.position.y;
+                penalty_z = penalty.transform.position.z;
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
                 if (orientation == 1)
                 {
@@ -188,19 +194,11 @@ public class ControlLevel_Trials : ControlLevel
         collectResponse.AddUpdateMethod(() =>
         {
 
-            if (triggered.trigger == true)
+            if (trigger.activeSelf == true && testobject == null)
             {
                 trigger_x = gamecontroller.transform.position.x;
                 trigger_y = gamecontroller.transform.position.y;
                 trigger_z = gamecontroller.transform.position.z;
-                target_x = testobject.transform.localPosition.x;
-                target_y = testobject.transform.localPosition.y;
-                target_z = testobject.transform.localPosition.z;
-                penalty_x = penalty.transform.position.x;
-                penalty_y = penalty.transform.position.y;
-                penalty_z = penalty.transform.position.z;
-
-                Destroy(testobject);
             }
 
             Timer += Time.deltaTime;
@@ -236,7 +234,7 @@ public class ControlLevel_Trials : ControlLevel
                 trialScore = -100;
             }
 
-            
+            trigger.SetActive(false);
         });
         scoreState.AddTimer(1f, destination);
 

@@ -11,54 +11,64 @@ using System.Text;
 
 public class ControlLevel_Trials : ControlLevel
 {
+    // Canvases and Text objects
+    public GameObject beginText; // instructions canvas
+    public GameObject endText; // thank you for playing canvas
+    public Text scoreDisplay;
+    
+    // Other script declarations
+    private Verify verifyPositions;
+    private Controls controls; 
+    private ControllerCheck controller; 
+    private HeadCheck head; 
+    private TriggerPull triggered; 
+    
+    // Data Writeout objects
+    public string startTime;
+    public string endTime;
+    public int trials = 0; 
+    private int score; 
+    [System.NonSerialized]
+    public float polarAngle, elevationAngle, a;
+    [System.NonSerialized]
+    public float radius, trigger_x, trigger_y, trigger_z, target_x, target_y, target_z, penalty_x, penalty_y, penalty_z;
+    
+    // Placeholders for loops and accessing members lists
+    private int j, i, k = 0;
+    private int orientation;
+    private int random1, random2; 
+    public int cases;
+    
+    // Intermediate objects
+    private float Timer;
+    private int trialScore;
+    private int end = 0;
+    public bool data;
+    public int numberoftrials = 20;
+    
+    // Physical objects
+    private GameObject rightController;
+    private GameObject leftController;
+    private GameObject headset;
+    
+    // Empty Game objects
+    private GameObject trigger;
+    public GameObject manager; // control levels game object, holding all scirpts
+    
+    // Unity Space objects
     public GameObject controllerPosition; // Hand position column
     public GameObject playerPosition; // headset poisiton column
     public GameObject gamecontroller; // Set to which controller is being used (icon)
     public GameObject test; // leftcontroller or right controller in heirarchy
     public GameObject target;
-    public GameObject manager; // control levels game object, holding all scirpts
-    public GameObject beginText; // instructions canvas
-    public GameObject endText; // thank you for playing canvas
-    public Text scoreDisplay;
     private GameObject penalty;
-    public string startTime;
-    public string endTime;
     public GameObject startingPositions;
-    private GameObject headset;
-
-    public int numberoftrials = 20;
-    private Verify verifyPositions; // script
-    private Controls controls; // script
-    private ControllerCheck controller; // scripts
-    private HeadCheck head; // scripts
-    private TriggerPull triggered; // scripts
-    public int trials = 0; // number of total trials
-    private int score; // player score
-    private int trialScore;
-    private int end = 0;
-    public bool data;
-    private int j, i, k = 0;
-    private int orientation;
-    private int random1, random2;
-    private float Timer;
-    private GameObject trigger;
-    public int cases;
-    public int[] trialTypes;
-
-    private GameObject rightController;
-    private GameObject leftController;
-
     [System.NonSerialized]
     public GameObject testobject;
-    [System.NonSerialized]
-    public float polarAngle, elevationAngle, a;
-    [System.NonSerialized]
-    public float radius, trigger_x, trigger_y, trigger_z, target_x, target_y, target_z, penalty_x, penalty_y, penalty_z;
-
-    // Vive Control GameObjects
-    public SteamVR_Input_Sources handType;
-    public SteamVR_Action_Boolean squeezeAction;
-
+    
+    // List of 20 of each trial type
+    public int[] trialTypes;
+    
     public override void DefineControlLevel()
     { 
         // Defining States

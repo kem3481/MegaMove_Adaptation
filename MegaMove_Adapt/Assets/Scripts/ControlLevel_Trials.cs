@@ -25,7 +25,6 @@ public class ControlLevel_Trials : ControlLevel
     public string endTime;
     public GameObject startingPositions;
     private GameObject headset;
-
     public int numberoftrials = 20;
     private Verify verifyPositions; // script
     private Controls controls; // script
@@ -44,7 +43,6 @@ public class ControlLevel_Trials : ControlLevel
     private GameObject trigger;
     public int cases;
     public int[] trialTypes;
-
     private GameObject rightController;
     private GameObject leftController;
 
@@ -60,8 +58,9 @@ public class ControlLevel_Trials : ControlLevel
     public SteamVR_Action_Boolean squeezeAction;
 
     public override void DefineControlLevel()
-    { 
+    {
         // Defining States
+        State calib = new State("Calibration");
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
         State stimOn = new State("Stimulus"); // Step 3
         State collectResponse = new State("CollectResponse"); // Step 4
@@ -69,24 +68,37 @@ public class ControlLevel_Trials : ControlLevel
         State scoreState = new State("Score");
         State destination = new State("Destination"); // sends the script either back to begin or to feeback
         State feedback = new State("Feedback"); // Step 5
-        AddActiveStates(new List<State> { begin, stimOn, collectResponse, penaltyState, scoreState, destination, feedback });
+        AddActiveStates(new List<State> { calib, begin, stimOn, collectResponse, penaltyState, scoreState, destination, feedback });
         
         // Accessing other scripts
         verifyPositions = manager.GetComponent<Verify>();
         controls = manager.GetComponent<Controls>();
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
+        DDC = EFV.GetComponent<DisableDuringCalibration>();
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
-
+        EAC = DDC.enableaftercalibration;
         trigger = GameObject.FindGameObjectWithTag("Trigger");
 
         trialTypes = controls.trialTypes;
-        scoreDisplay.text = "Score: " + score;
+
+        calib.AddStateInitializationMethod(() =>
+        {
+            beginText.SetActive(false);
+            endText.SetActive(false);
+            controllerPosition.SetActive(false);
+            playerPosition.SetActive(false);
+            scoreDisplay.text = string.Empty;
+        });
+        calib.SpecifyStateTermination(() => Input.GetKeyDown("space"), begin);
 
         begin.AddStateInitializationMethod(() =>
         {
+            scoreDisplay.text = "Score: " + score;
+            controllerPosition.SetActive(true);
+            playerPosition.SetActive(true);
             trigger.SetActive(false);
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
@@ -102,7 +114,6 @@ public class ControlLevel_Trials : ControlLevel
                 beginText.SetActive(true);
             }
             endText.SetActive(false);
-
             trigger_x = 0;
             trigger_y = 0;
             trigger_z = 0;
@@ -196,6 +207,11 @@ public class ControlLevel_Trials : ControlLevel
         });
         collectResponse.AddUpdateMethod(() =>
         {
+            if (triggered.passedRadius == true)
+            {
+                Destroy(testobject);
+            }
+
 
             if (trigger.activeSelf == true)
             {
@@ -226,16 +242,17 @@ public class ControlLevel_Trials : ControlLevel
             {
                 trialScore = 100;
             }
-            else
-            {
-                trialScore = 0;
-            }
 
             if ((trigger_x > (penalty_x - .03f)) && (trigger_x < (penalty_x + .03f)) &&
                (trigger_y > (penalty_y - .03f)) && (trigger_y < (penalty_y + .03f)) &&
                (trigger_z > (penalty_z - .03f)) && (trigger_z < (penalty_z + .03f)))
             {
                 trialScore = -100;
+            }
+
+            if (triggered.passedRadius == true)
+            {
+                trialScore = 0;
             }
 
             trigger.SetActive(false);

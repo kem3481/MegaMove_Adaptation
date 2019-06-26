@@ -49,6 +49,7 @@ public class ControlLevel_Trials : ControlLevel
     // Physical objects
     private GameObject rightController;
     private GameObject leftController;
+<<<<<<< Updated upstream
     private GameObject headset;
     
     // Empty Game objects
@@ -63,6 +64,9 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject target;
     private GameObject penalty;
     public GameObject startingPositions;
+=======
+    public int Fix;
+>>>>>>> Stashed changes
     [System.NonSerialized]
     public GameObject testobject;
     
@@ -89,11 +93,37 @@ public class ControlLevel_Trials : ControlLevel
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
+<<<<<<< Updated upstream
 
         trigger = GameObject.FindGameObjectWithTag("Trigger");
 
         trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
+=======
+        trigger = GameObject.FindGameObjectWithTag("Trigger");
+
+        trialTypes = controls.trialTypes;
+
+        calib.AddStateInitializationMethod(() =>
+        {
+            beginText.SetActive(false);
+            endText.SetActive(false);
+            controllerPosition.SetActive(false);
+            playerPosition.SetActive(false);
+            scoreDisplay.text = string.Empty;
+
+            Fix = UnityEngine.Random.Range(0, 1);
+            if (Fix == 0)
+            {
+                Debug.Log("Start in Fixation");
+            }
+            if (Fix == 1)
+            {
+                Debug.Log("Start with Free Motion");
+            }
+        });
+        calib.SpecifyStateTermination(() => Input.GetKeyDown("space"), begin);
+>>>>>>> Stashed changes
 
         begin.AddStateInitializationMethod(() =>
         {
@@ -157,7 +187,7 @@ public class ControlLevel_Trials : ControlLevel
                 target = controls.allTargets[i];
             }
         }
-        /* attempt at list removing
+        
         for (int i = 0; i < random2; i++)
         {
             trialTypes[i] = trialTypes[i];
@@ -167,8 +197,8 @@ public class ControlLevel_Trials : ControlLevel
             trialTypes[i] = trialTypes[i+1];
         }
         
-        Array.Resize(ref trialTypes, trialTypes - 1);
-        */
+        Array.Resize(ref trialTypes, trialTypes.Length - 1);
+        
         if (testobject == null)
         {
                 testobject = Instantiate(target);
@@ -206,6 +236,18 @@ public class ControlLevel_Trials : ControlLevel
         });
         collectResponse.AddUpdateMethod(() =>
         {
+<<<<<<< Updated upstream
+=======
+            data = true;
+            if (triggered.passedRadius == true)
+            {
+                trigger_x = gamecontroller.transform.position.x;
+                trigger_y = gamecontroller.transform.position.y;
+                trigger_z = gamecontroller.transform.position.z;
+                Destroy(testobject);
+            }
+
+>>>>>>> Stashed changes
 
             if (trigger.activeSelf == true)
             {
@@ -216,7 +258,7 @@ public class ControlLevel_Trials : ControlLevel
             }
 
             Timer += Time.deltaTime;
-            
+            data = false;
         });
         collectResponse.SpecifyStateTermination(() => testobject == null, scoreState);
         collectResponse.SpecifyStateTermination(() => Timer > 5f, penaltyState);
@@ -276,7 +318,7 @@ public class ControlLevel_Trials : ControlLevel
         feedback.AddStateInitializationMethod(() =>
         {
             endText.SetActive(true);
-            data = true;
+            
         });
 
     }

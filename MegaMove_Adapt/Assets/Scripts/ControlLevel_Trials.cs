@@ -49,7 +49,7 @@ public class ControlLevel_Trials : ControlLevel
     // Physical objects
     private GameObject rightController;
     private GameObject leftController;
-<<<<<<< Updated upstream
+
     private GameObject headset;
     
     // Empty Game objects
@@ -64,9 +64,9 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject target;
     private GameObject penalty;
     public GameObject startingPositions;
-=======
+
     public int Fix;
->>>>>>> Stashed changes
+
     [System.NonSerialized]
     public GameObject testobject;
     
@@ -74,8 +74,9 @@ public class ControlLevel_Trials : ControlLevel
     public int[] trialTypes;
     
     public override void DefineControlLevel()
-    { 
+    {
         // Defining States
+        State calib = new State("Calibration");
         State begin = new State("Begin"); // Step 1 and 2 in Procedure
         State stimOn = new State("Stimulus"); // Step 3
         State collectResponse = new State("CollectResponse"); // Step 4
@@ -83,7 +84,7 @@ public class ControlLevel_Trials : ControlLevel
         State scoreState = new State("Score");
         State destination = new State("Destination"); // sends the script either back to begin or to feeback
         State feedback = new State("Feedback"); // Step 5
-        AddActiveStates(new List<State> { begin, stimOn, collectResponse, penaltyState, scoreState, destination, feedback });
+        AddActiveStates(new List<State> { calib, begin, stimOn, collectResponse, penaltyState, scoreState, destination, feedback });
         
         // Accessing other scripts
         verifyPositions = manager.GetComponent<Verify>();
@@ -93,13 +94,13 @@ public class ControlLevel_Trials : ControlLevel
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
-<<<<<<< Updated upstream
+
 
         trigger = GameObject.FindGameObjectWithTag("Trigger");
 
         trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
-=======
+
         trigger = GameObject.FindGameObjectWithTag("Trigger");
 
         trialTypes = controls.trialTypes;
@@ -123,7 +124,7 @@ public class ControlLevel_Trials : ControlLevel
             }
         });
         calib.SpecifyStateTermination(() => Input.GetKeyDown("space"), begin);
->>>>>>> Stashed changes
+
 
         begin.AddStateInitializationMethod(() =>
         {
@@ -236,8 +237,7 @@ public class ControlLevel_Trials : ControlLevel
         });
         collectResponse.AddUpdateMethod(() =>
         {
-<<<<<<< Updated upstream
-=======
+
             data = true;
             if (triggered.passedRadius == true)
             {
@@ -247,7 +247,7 @@ public class ControlLevel_Trials : ControlLevel
                 Destroy(testobject);
             }
 
->>>>>>> Stashed changes
+
 
             if (trigger.activeSelf == true)
             {

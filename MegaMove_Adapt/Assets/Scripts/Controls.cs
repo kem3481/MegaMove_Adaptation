@@ -5,9 +5,9 @@ using UnityEngine;
 public class Controls : MonoBehaviour
 {
     // Eccentricities
-    private float small = 85f;
-    private float medium = 80f;
-    private float large =  75f;
+    private float small = 80f;
+    private float medium = 78f;
+    private float large =  76f;
     
     // Prefabs
     public GameObject smallOverlap;

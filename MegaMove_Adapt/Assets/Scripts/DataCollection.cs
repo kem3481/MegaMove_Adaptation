@@ -13,7 +13,7 @@ using System.Text;
 /// </remark>
 public class DataCollection : MonoBehaviour
 {
-    public string FolderName = "D:\\kem3481\\MEGAMOVE";
+    public string FolderName = "C:\\Users\\kem3481\\MEGAMOVE";
     public string FileName = "EndPointsData";
     private string OutputDir;
 
@@ -132,21 +132,11 @@ public class DataCollection : MonoBehaviour
 
     public void Update()
     {
-        if (controlLevel.data == true && allActive == true)
+        if (controlLevel.data == true)
         {
             WriteFile();
         }
-
-        if (targetPosition != null && 
-            penaltyPosition != null && 
-            triggerPosition != null && 
-            startTime != null && 
-            testObject != null &&
-            polar != null &&
-            elevation != null)
-        {
-            allActive = true;
-        }
+        
     }
 
     public void OnApplicationQuit()

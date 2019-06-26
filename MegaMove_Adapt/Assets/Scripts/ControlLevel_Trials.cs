@@ -204,6 +204,7 @@ public class ControlLevel_Trials : ControlLevel
         
         if (testobject == null)
         {
+                data = true;
                 testobject = Instantiate(target);
 
 
@@ -240,12 +241,13 @@ public class ControlLevel_Trials : ControlLevel
         collectResponse.AddUpdateMethod(() =>
         {
 
-            data = true;
+            
             if (triggered.passedRadius == true)
             {
                 trigger_x = gamecontroller.transform.position.x;
                 trigger_y = gamecontroller.transform.position.y;
                 trigger_z = gamecontroller.transform.position.z;
+                data = false;
                 Destroy(testobject);
             }
 
@@ -256,11 +258,11 @@ public class ControlLevel_Trials : ControlLevel
                 trigger_x = gamecontroller.transform.position.x;
                 trigger_y = gamecontroller.transform.position.y;
                 trigger_z = gamecontroller.transform.position.z;
+                data = false;
                 Destroy(testobject);
             }
 
             Timer += Time.deltaTime;
-            data = false;
         });
         collectResponse.SpecifyStateTermination(() => testobject == null, scoreState);
         collectResponse.SpecifyStateTermination(() => Timer > 5f, penaltyState);

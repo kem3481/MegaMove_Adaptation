@@ -6,7 +6,7 @@ using System.Text;
 
 public class PositionLogger : MonoBehaviour
 {
-    public string FolderName = "D:\\kem3481\\MEGAMOVE";
+    public string FolderName = "C:\\Users\\kem3481\\MEGAMOVE";
     public string FileName = "Positions";
     private string OutputDir;
 

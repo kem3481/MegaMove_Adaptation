@@ -91,6 +91,7 @@ public class ControlLevel_Trials : ControlLevel
         controls = manager.GetComponent<Controls>();
         controller = controllerPosition.GetComponent<ControllerCheck>();
         head = playerPosition.GetComponent<HeadCheck>();
+        triggered = gamecontroller.GetComponent<TriggerPull>();
         rightController = GameObject.FindGameObjectWithTag("rightController");
         leftController = GameObject.FindGameObjectWithTag("leftController");
         headset = GameObject.FindGameObjectWithTag("Camera");
@@ -138,6 +139,7 @@ public class ControlLevel_Trials : ControlLevel
 
             trialScore = 0;
             controllerPosition.SetActive(true);
+            playerPosition.SetActive(true);
             if (trials < 1)
             {
                 beginText.SetActive(true);
@@ -189,16 +191,16 @@ public class ControlLevel_Trials : ControlLevel
             }
         }
         
-        for (int i = 0; i < random2; i++)
+        /*for (int i = 0; i < random2; i++)
         {
             trialTypes[i] = trialTypes[i];
-        }
-        for (int i = random2; i < trialTypes.Length - 1; i++)
+        }*/
+        for (int i = random2; i < controls.trialTypes.Length - 1; i++)
         {
-            trialTypes[i] = trialTypes[i+1];
+            controls.trialTypes[i] = controls.trialTypes[i+1];
         }
         
-        Array.Resize(ref trialTypes, trialTypes.Length - 1);
+        Array.Resize(ref controls.trialTypes, controls.trialTypes.Length - 1);
         
         if (testobject == null)
         {
@@ -272,22 +274,20 @@ public class ControlLevel_Trials : ControlLevel
 
         scoreState.AddStateInitializationMethod(() =>
         {
-            if ((trigger_x > (target_x - .03f)) && (trigger_x < (target_x + .03f)) &&
-               (trigger_y > (target_y - .03f)) && (trigger_y < (target_y + .03f)) &&
-               (trigger_z > (target_z - .03f)) && (trigger_z < (target_z + .03f)))
+            if (triggered.targetTouched == true)
             {
                 trialScore = 100;
+                triggered.targetTouched = false;
             }
             else
             {
                 trialScore = 0;
             }
 
-            if ((trigger_x > (penalty_x - .03f)) && (trigger_x < (penalty_x + .03f)) &&
-               (trigger_y > (penalty_y - .03f)) && (trigger_y < (penalty_y + .03f)) &&
-               (trigger_z > (penalty_z - .03f)) && (trigger_z < (penalty_z + .03f)))
+            if (triggered.penaltyTouched == true)
             {
                 trialScore = -100;
+                triggered.penaltyTouched = false;
             }
 
             trigger.SetActive(false);

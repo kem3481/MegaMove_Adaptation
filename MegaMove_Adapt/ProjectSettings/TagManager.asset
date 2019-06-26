@@ -21,6 +21,7 @@ TagManager:
   - Trigger
   - Manager
   - Object
+  - passedRadius
   layers:
   - Default
   - TransparentFX

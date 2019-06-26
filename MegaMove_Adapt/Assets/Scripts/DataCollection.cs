@@ -34,6 +34,7 @@ public class DataCollection : MonoBehaviour
     public TriggerPull triggerPull;
     public GameObject trigger;
     public GameObject manager;
+    private bool allActive;
     
    
     //Gives user control over when to start and stop recording, trigger this with spacebar;
@@ -49,7 +50,7 @@ public class DataCollection : MonoBehaviour
 
     void Start()
     {
-
+        allActive = false;
        controlLevel = manager.GetComponent<ControlLevel_Trials>();
 
         // create a folder 
@@ -131,11 +132,21 @@ public class DataCollection : MonoBehaviour
 
     public void Update()
     {
-        if (controlLevel.data == true)
+        if (controlLevel.data == true && allActive == true)
         {
             WriteFile();
         }
 
+        if (targetPosition != null && 
+            penaltyPosition != null && 
+            triggerPosition != null && 
+            startTime != null && 
+            testObject != null &&
+            polar != null &&
+            elevation != null)
+        {
+            allActive = true;
+        }
     }
 
     public void OnApplicationQuit()

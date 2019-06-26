@@ -209,20 +209,20 @@ public class ControlLevel_Trials : ControlLevel
 
 
                 penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
-                target_x = testobject.transform.localPosition.x;
-                target_y = testobject.transform.localPosition.y;
-                target_z = testobject.transform.localPosition.z;
-                penalty_x = penalty.transform.position.x;
-                penalty_y = penalty.transform.position.y;
-                penalty_z = penalty.transform.position.z;
+                target_x = testobject.transform.position.x;
+                target_y = testobject.transform.position.y;
+                target_z = testobject.transform.position.z;
+                penalty_x = penalty.transform.localPosition.x;
+                penalty_y = penalty.transform.localPosition.y;
+                penalty_z = penalty.transform.localPosition.z;
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
                 if (orientation == 1)
                 {
-                    testobject.transform.eulerAngles = new Vector3(0f, -polarAngle * Mathf.Rad2Deg, 0f);
+                    testobject.transform.eulerAngles = new Vector3(0f, -polarAngle * Mathf.Rad2Deg + 90, 0f);
                 }
                 if (orientation == 0)
                 {
-                    testobject.transform.eulerAngles = new Vector3(0f,( -polarAngle * Mathf.Rad2Deg) + 180, 0f);
+                    testobject.transform.eulerAngles = new Vector3(0f,( -polarAngle * Mathf.Rad2Deg) + 270, 0f);
                 }
             }
         
@@ -244,9 +244,9 @@ public class ControlLevel_Trials : ControlLevel
             
             if (triggered.passedRadius == true)
             {
-                trigger_x = gamecontroller.transform.position.x;
-                trigger_y = gamecontroller.transform.position.y;
-                trigger_z = gamecontroller.transform.position.z;
+                trigger_x = gamecontroller.transform.localPosition.x;
+                trigger_y = gamecontroller.transform.localPosition.y;
+                trigger_z = gamecontroller.transform.localPosition.z;
                 data = false;
                 Destroy(testobject);
             }

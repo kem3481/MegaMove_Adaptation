@@ -104,6 +104,8 @@ public class ControlLevel_Trials : ControlLevel
 
         calib.AddStateInitializationMethod(() =>
         {
+            //UnityEngine.Random.InitState
+
             beginText.SetActive(false);
             endText.SetActive(false);
             controllerPosition.SetActive(false);

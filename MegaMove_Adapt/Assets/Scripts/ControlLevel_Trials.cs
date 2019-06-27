@@ -250,7 +250,7 @@ public class ControlLevel_Trials : ControlLevel
             }
 
 
-
+            // Colliders not triggers
             if (trigger.activeSelf == true)
             {
                 trigger_x = test.transform.position.x;
@@ -299,7 +299,7 @@ public class ControlLevel_Trials : ControlLevel
             score = score + trialScore;
             
             scoreDisplay.text = "Score: " + score;
-            data = false;
+            
             Debug.Log("Trigger pull position: " + trigger_x + ", " + trigger_y + ", " + trigger_z);
             Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
             Debug.Log("Score: " + score);

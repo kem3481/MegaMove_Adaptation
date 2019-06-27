@@ -128,6 +128,7 @@ public class DataCollection : MonoBehaviour
         writeString = stringBuilder.ToString();
         writebytes = Encoding.ASCII.GetBytes(writeString);
         trialStreams.Write(writebytes, 0, writebytes.Length);
+        controlLevel.data = false;
     }
 
     public void Update()

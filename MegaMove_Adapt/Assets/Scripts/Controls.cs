@@ -6,8 +6,8 @@ public class Controls : MonoBehaviour
 {
     // Eccentricities
     private float small = 80f;
-    private float medium = 78f;
-    private float large =  76f;
+    private float medium = 75f;
+    private float large =  70f;
     
     // Prefabs
     public GameObject smallOverlap;

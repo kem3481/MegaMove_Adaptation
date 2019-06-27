@@ -49,7 +49,6 @@ public class ControlLevel_Trials : ControlLevel
     // Physical objects
     private GameObject rightController;
     private GameObject leftController;
-
     private GameObject headset;
     
     // Empty Game objects
@@ -63,6 +62,7 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject test; // leftcontroller or right controller in heirarchy
     public GameObject target;
     private GameObject penalty;
+    private GameObject targetonObject;
     public GameObject startingPositions;
 
     public int Fix;
@@ -200,17 +200,11 @@ public class ControlLevel_Trials : ControlLevel
         
         if (testobject == null)
         {
-                data = true;
+                
                 testobject = Instantiate(target);
-
-
+               
+                targetonObject = GameObject.FindGameObjectWithTag("Object");
                 penalty = GameObject.FindGameObjectWithTag("PenaltyonTarget");
-                target_x = testobject.transform.position.x;
-                target_y = testobject.transform.position.y;
-                target_z = testobject.transform.position.z;
-                penalty_x = penalty.transform.position.x;
-                penalty_y = penalty.transform.position.y;
-                penalty_z = penalty.transform.position.z;
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
                 if (orientation == 1)
                 {
@@ -220,6 +214,13 @@ public class ControlLevel_Trials : ControlLevel
                 {
                     testobject.transform.eulerAngles = new Vector3(0f,( -polarAngle * Mathf.Rad2Deg) + 270, 0f);
                 }
+
+                target_x = targetonObject.transform.position.x;
+                target_y = targetonObject.transform.position.y;
+                target_z = targetonObject.transform.position.z;
+                penalty_x = penalty.transform.position.x;
+                penalty_y = penalty.transform.position.y;
+                penalty_z = penalty.transform.position.z;
             }
         
   
@@ -240,10 +241,9 @@ public class ControlLevel_Trials : ControlLevel
             
             if (triggered.passedRadius == true)
             {
-                trigger_x = gamecontroller.transform.localPosition.x;
-                trigger_y = gamecontroller.transform.localPosition.y;
-                trigger_z = gamecontroller.transform.localPosition.z;
-                data = false;
+                trigger_x = test.transform.position.x;
+                trigger_y = test.transform.position.y;
+                trigger_z = test.transform.position.z;
                 Destroy(testobject);
             }
 
@@ -251,10 +251,9 @@ public class ControlLevel_Trials : ControlLevel
 
             if (trigger.activeSelf == true)
             {
-                trigger_x = gamecontroller.transform.position.x;
-                trigger_y = gamecontroller.transform.position.y;
-                trigger_z = gamecontroller.transform.position.z;
-                data = false;
+                trigger_x = test.transform.position.x;
+                trigger_y = test.transform.position.y;
+                trigger_z = test.transform.position.z;
                 Destroy(testobject);
             }
 
@@ -289,14 +288,16 @@ public class ControlLevel_Trials : ControlLevel
             }
 
             trigger.SetActive(false);
+            data = true;
         });
         scoreState.AddTimer(1f, destination);
 
         destination.AddStateInitializationMethod(() =>
         {
             score = score + trialScore;
+            
             scoreDisplay.text = "Score: " + score;
-
+            data = false;
             Debug.Log("Trigger pull position: " + trigger_x + ", " + trigger_y + ", " + trigger_z);
             Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
             Debug.Log("Score: " + score);

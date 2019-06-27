@@ -102,10 +102,6 @@ public class ControlLevel_Trials : ControlLevel
         trialTypes = controls.trialTypes;
         scoreDisplay.text = "Score: " + score;
 
-        trigger = GameObject.FindGameObjectWithTag("Trigger");
-
-        trialTypes = controls.trialTypes;
-
         calib.AddStateInitializationMethod(() =>
         {
             beginText.SetActive(false);
@@ -212,9 +208,9 @@ public class ControlLevel_Trials : ControlLevel
                 target_x = testobject.transform.position.x;
                 target_y = testobject.transform.position.y;
                 target_z = testobject.transform.position.z;
-                penalty_x = penalty.transform.localPosition.x;
-                penalty_y = penalty.transform.localPosition.y;
-                penalty_z = penalty.transform.localPosition.z;
+                penalty_x = penalty.transform.position.x;
+                penalty_y = penalty.transform.position.y;
+                penalty_z = penalty.transform.position.z;
                 testobject.transform.position = playerPosition.transform.position + new Vector3((a * Mathf.Cos(polarAngle)), (radius * Mathf.Sin(elevationAngle)), (a * Mathf.Sin(polarAngle)));
                 if (orientation == 1)
                 {
@@ -305,7 +301,7 @@ public class ControlLevel_Trials : ControlLevel
             Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
             Debug.Log("Score: " + score);
 
-            if (trials < numberoftrials)
+            if (trials < 180)
             {
                 end = 1;
             }

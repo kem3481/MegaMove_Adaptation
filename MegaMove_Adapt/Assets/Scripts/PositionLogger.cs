@@ -16,7 +16,7 @@ public class PositionLogger : MonoBehaviour
 
     //Gives user control over when to start and stop recording, trigger this with spacebar;
     public bool startWriting;
-
+    public SubscriptionsController PupilConnection;
     //Initialize some containers
     FileStream streams;
     FileStream trialStreams;

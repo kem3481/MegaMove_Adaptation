@@ -10,16 +10,15 @@ public class PositionLogger : MonoBehaviour
     public string FileName = "Positions";
     private string OutputDir;
     public Transform Camera;
-    private Transform eye0InWorld;
-    private Transform eye1InWorld;
-    private Transform cyclopianEyeinWorld;
-    private Transform cyclopianGazeinWorld;
-    private Transform fixationWorld;
+    public Transform eye0InWorld;
+    public Transform eye1InWorld;
+    public Transform cyclopianEyeinWorld;
+    public Transform cyclopianGazeinWorld;
     public GameObject fixationPosition;
-    private Transform particiapntFixating;
-    private Transform participantGaze;
-    private Transform gazeWorld0;
-    private Transform gazeWorld1;
+    private Vector3 particiapntFixating;
+    private Vector3 participantGaze;
+    public Transform gazeWorld0;
+    public Transform gazeWorld1;
     public float angularDifference;
 
     //Things you want to write out, set them in the inspector
@@ -134,39 +133,30 @@ public class PositionLogger : MonoBehaviour
 
 
             // Defining Cyclopian Eye in World Coordiante System
-            eye0InWorld.position = Camera.position + new Vector3(gazeData.eyeCenter0.x, gazeData.eyeCenter0.y, gazeData.eyeCenter0.z);
-            eye1InWorld.position = Camera.position + new Vector3(gazeData.eyeCenter1.x, gazeData.eyeCenter1.y, gazeData.eyeCenter1.z);
+            eye0InWorld.localPosition = gazeData.eyeCenter0;
+            eye1InWorld.localPosition = gazeData.eyeCenter1;
 
-            eye0InWorld.rotation = Camera.rotation * eye0InWorld.rotation;
-            eye1InWorld.rotation = Camera.rotation * eye1InWorld.rotation;
-
-            cyclopianEyeinWorld.position = ((eye0InWorld.position + eye1InWorld.position) / 2);
+            cyclopianEyeinWorld.position = ((eye0InWorld.localPosition + eye1InWorld.localPosition) / 2);
             cyclopianEyeinWorld.rotation = Camera.rotation * cyclopianEyeinWorld.rotation;
 
-            Debug.Log("Cyclopian Position :" + cyclopianEyeinWorld.position);
             // Defining Position of Fixation point in World Coordinate System
-            fixationWorld.position = fixationPosition.transform.position;
+            //fixationWorld.position = fixationPosition.transform.position;
 
             // Where the participant should be looking in World coordinates
-            particiapntFixating.position = fixationWorld.position - cyclopianEyeinWorld.position;
-            particiapntFixating.rotation = Camera.rotation * particiapntFixating.rotation;
-            Debug.Log("Fixation :" + fixationWorld.position);
+            particiapntFixating = fixationPosition.transform.position - cyclopianEyeinWorld.position;
+
             // Gaze in world coordinates
-            gazeWorld0.position = gazeData.GazeNormal0 + cyclopianEyeinWorld.position;
-            gazeWorld0.rotation = cyclopianEyeinWorld.rotation * gazeWorld0.rotation;
+            gazeWorld0.localPosition = gazeData.gazeNormal0;
+            gazeWorld1.localPosition = gazeData.gazeNormal1;
 
-            gazeWorld1.position = gazeData.GazeNormal1 + cyclopianEyeinWorld.position;
-            gazeWorld1.rotation = cyclopianEyeinWorld.rotation * gazeWorld1.rotation;
-
-            cyclopianGazeinWorld.position = ((gazeWorld0.position + gazeWorld1.position) / 2);
+            cyclopianGazeinWorld.position = ((gazeWorld0.localPosition + gazeWorld1.localPosition) / 2);
             cyclopianGazeinWorld.rotation = Camera.rotation * cyclopianGazeinWorld.rotation;
-            Debug.Log("Cyclopian Gaze: " + cyclopianGazeinWorld.position);
+
             // Where the participant is looking in World coordinates
-            participantGaze.position = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
-            //participantGaze.rotation = Camera.rotation * participantGaze.rotation;
+            participantGaze = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
             
             // Angular Difference
-            angularDifference = Mathf.Acos((Vector3.Dot(participantGaze.position, particiapntFixating.position)) / (particiapntFixating.position.magnitude * participantGaze.position.magnitude));
+            angularDifference = Mathf.Acos((Vector3.Dot(participantGaze, particiapntFixating)) / (particiapntFixating.magnitude * participantGaze.magnitude));
         }
     }
 
@@ -190,13 +180,14 @@ public class PositionLogger : MonoBehaviour
     public void Update()
     {
         //Use spacebar to initiate/stop recording values, you can change this if you want 
-        if (controller != null)
+        if (controlLevel.playerPosition != null)
         {
             WriteFile();
         }
 
 
     }
+
 
     public void OnApplicationQuit()
     {

@@ -80,7 +80,7 @@ namespace PupilLabs
 
         private Vector3 gazePoint3d;
         public Vector3 eyeCenter0, eyeCenter1;
-        private Vector3 gazeNormal0, gazeNormal1;
+        public Vector3 gazeNormal0, gazeNormal1;
 
         public GazeData(string topic, Dictionary<string, object> dictionary, double unityToPupilTimeOffset)
         {

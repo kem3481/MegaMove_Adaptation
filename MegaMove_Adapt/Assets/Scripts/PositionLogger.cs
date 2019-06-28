@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 using System.Text;
-
+using PupilLabs;
 
 public class PositionLogger : MonoBehaviour
 {
@@ -26,6 +26,18 @@ public class PositionLogger : MonoBehaviour
 
     private ControlLevel_Trials controlLevel;
     public GameObject manager;
+
+    GazeListener gazeListener = null;
+
+    Vector3 pl_gazedirection_wrtHead_xyz;
+    Vector3 pl_E0_Norm_wrtHead_xyz;
+    Vector3 pl_E1_Norm_wrtHead_xyz;
+
+    float plConfidence;
+    string plTimeStamp;
+    float pl_gazedistance;
+
+    int mode;
 
     void Start()
     {
@@ -61,14 +73,54 @@ public class PositionLogger : MonoBehaviour
             );
         //add column names
         stringBuilder.Append(
-            "FrameNumber\t" + "StartTime\t" /* + "HeadX\t" + "HeadY\t" + "HeadZ\t"*/ + "HandX\t" + "HandY\t" + "HandZ\t" + Environment.NewLine
-                        );
+            "FrameNumber\t" + 
+            "StartTime\t" + 
+            "pl_Confidence\t" + 
+            "pl_gazedirection_wrtHead_X\t" +
+            "pl_gazedirection_wrtHead_Y\t" +
+            "pl_gazedirection_wrtHead_Z\t" +
+            "pl_gazedistance_wrtHead\t" +
+            "HandX\t" + 
+            "HandY\t" + 
+            "HandZ\t" + 
+            Environment.NewLine);
 
 
         writeString = stringBuilder.ToString();
         writebytes = Encoding.ASCII.GetBytes(writeString);
         trialStreams.Write(writebytes, 0, writebytes.Length);
 
+    }
+
+    void ReceiveGaze(GazeData gazeData)
+    {
+
+        if (gazeData.MappingContext != GazeData.GazeMappingContext.Binocular)
+        {
+            plConfidence = float.NaN;
+            plTimeStamp = "NaN";
+            pl_gazedirection_wrtHead_xyz = new Vector3(float.NaN, float.NaN, float.NaN);
+
+            pl_E0_Norm_wrtHead_xyz = new Vector3(float.NaN, float.NaN, float.NaN);
+            pl_E1_Norm_wrtHead_xyz = new Vector3(float.NaN, float.NaN, float.NaN);
+
+            pl_gazedistance = float.NaN;
+
+            mode = 0;
+        }
+        if (gazeData.MappingContext == GazeData.GazeMappingContext.Binocular)
+        {
+            plConfidence = gazeData.Confidence;
+            plTimeStamp = DateTime.UtcNow.ToString("HH:mm:ss"); ;
+            pl_gazedirection_wrtHead_xyz = gazeData.GazeDirection;
+
+            pl_E0_Norm_wrtHead_xyz = gazeData.GazeNormal0;
+            pl_E1_Norm_wrtHead_xyz = gazeData.GazeNormal1;
+
+            pl_gazedistance = gazeData.GazeDistance;
+
+            mode = 1;
+        }
     }
 
     void WriteFile()
@@ -79,10 +131,12 @@ public class PositionLogger : MonoBehaviour
         stringBuilder.Append(
                     Time.frameCount + "\t"
                     + Time.time * 1000 + "\t"
-                    /*+ Object1.transform.position.x.ToString() + "\t"
-                    + Object1.transform.position.y.ToString() + "\t"
-                    + Object1.transform.position.z.ToString() + "\t"
-                    */+ controller.transform.position.x.ToString() + "\t"
+                    + plConfidence.ToString() + "\t"
+                    + pl_gazedirection_wrtHead_xyz.x.ToString() + "\t"
+                    + pl_gazedirection_wrtHead_xyz.y.ToString() + "\t"
+                    + pl_gazedirection_wrtHead_xyz.z.ToString() + "\t"
+                    + pl_gazedistance.ToString() + "\t" 
+                    + controller.transform.position.x.ToString() + "\t"
                     + controller.transform.position.y.ToString() + "\t"
                     + controller.transform.position.z.ToString() + "\t" +
                     Environment.NewLine

@@ -15,6 +15,7 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject beginText; // instructions canvas
     public GameObject endText; // thank you for playing canvas
     public Text scoreDisplay;
+    public GameObject scoreText;
     
     // Other script declarations
     private Verify verifyPositions;
@@ -66,7 +67,7 @@ public class ControlLevel_Trials : ControlLevel
     public GameObject startingPositions;
 
     public int Fix;
-
+    public float percentCorrect;
     [System.NonSerialized]
     public GameObject testobject;
     
@@ -105,13 +106,13 @@ public class ControlLevel_Trials : ControlLevel
         calib.AddStateInitializationMethod(() =>
         {
             //UnityEngine.Random.InitState
-
+            percentCorrect = 0;
             beginText.SetActive(false);
             endText.SetActive(false);
             controllerPosition.SetActive(false);
             playerPosition.SetActive(false);
             scoreDisplay.text = string.Empty;
-
+            scoreText.SetActive(false);
             Fix = UnityEngine.Random.Range(0, 1);
             if (Fix == 0)
             {
@@ -127,6 +128,7 @@ public class ControlLevel_Trials : ControlLevel
 
         begin.AddStateInitializationMethod(() =>
         {
+            scoreText.SetActive(false);
             trigger.SetActive(false);
             data = false;
             startTime = System.DateTime.UtcNow.ToString("HH:mm:ss");
@@ -189,10 +191,6 @@ public class ControlLevel_Trials : ControlLevel
             }
         }
         
-        /*for (int i = 0; i < random2; i++)
-        {
-            trialTypes[i] = trialTypes[i];
-        }*/
         for (int i = random2; i < controls.trialTypes.Length - 1; i++)
         {
             controls.trialTypes[i] = controls.trialTypes[i+1];
@@ -224,9 +222,8 @@ public class ControlLevel_Trials : ControlLevel
                 penalty_y = penalty.transform.position.y;
                 penalty_z = penalty.transform.position.z;
             }
-        
-  
-            Debug.Log("Overlap: " + testobject);
+
+            Debug.Log("trialTypes Length: " + controls.trialTypes.Length);
             Debug.Log("Polar: " + polarAngle * Mathf.Rad2Deg);
             Debug.Log("Elevation: " + elevationAngle * Mathf.Rad2Deg);
             Debug.Log("Trial: " + trials);
@@ -246,6 +243,7 @@ public class ControlLevel_Trials : ControlLevel
                 trigger_x = test.transform.position.x;
                 trigger_y = test.transform.position.y;
                 trigger_z = test.transform.position.z;
+                data = true;
                 Destroy(testobject);
             }
 
@@ -256,6 +254,7 @@ public class ControlLevel_Trials : ControlLevel
                 trigger_x = test.transform.position.x;
                 trigger_y = test.transform.position.y;
                 trigger_z = test.transform.position.z;
+                data = true;
                 Destroy(testobject);
             }
 
@@ -277,6 +276,7 @@ public class ControlLevel_Trials : ControlLevel
             {
                 trialScore = 100;
                 triggered.targetTouched = false;
+                percentCorrect++;
             }
             else
             {
@@ -290,16 +290,16 @@ public class ControlLevel_Trials : ControlLevel
             }
 
             trigger.SetActive(false);
-            data = true;
+            score = score + trialScore;
+            scoreDisplay.text = "Score: " + score;
+            scoreText.SetActive(true);
+
         });
-        scoreState.AddTimer(1f, destination);
+        scoreState.AddTimer(3f, destination);
 
         destination.AddStateInitializationMethod(() =>
         {
-            score = score + trialScore;
-            
-            scoreDisplay.text = "Score: " + score;
-            
+            scoreText.SetActive(false);
             Debug.Log("Trigger pull position: " + trigger_x + ", " + trigger_y + ", " + trigger_z);
             Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
             Debug.Log("Score: " + score);
@@ -312,14 +312,16 @@ public class ControlLevel_Trials : ControlLevel
             {
                 end = 2;
             }
+            
         });
         destination.SpecifyStateTermination(() => end == 1, begin);
         destination.SpecifyStateTermination(() => end == 2, feedback);
 
         feedback.AddStateInitializationMethod(() =>
         {
-            endText.SetActive(true);
             
+            endText.SetActive(true);
+            percentCorrect = percentCorrect / 180;
         });
 
     }

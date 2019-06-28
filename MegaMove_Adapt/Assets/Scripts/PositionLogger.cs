@@ -12,7 +12,7 @@ public class PositionLogger : MonoBehaviour
 
     //Things you want to write out, set them in the inspector
     public GameObject controller;
-    ////public GameObject gaze;
+    public GameObject gaze;
 
     //Gives user control over when to start and stop recording, trigger this with spacebar;
     public bool startWriting;
@@ -23,7 +23,7 @@ public class PositionLogger : MonoBehaviour
     StringBuilder stringBuilder = new StringBuilder();
     String writeString;
     Byte[] writebytes;
-
+    public GameObject view;
     private ControlLevel_Trials controlLevel;
     public GameObject manager;
 

@@ -291,7 +291,7 @@ public class ControlLevel_Trials : ControlLevel
             scoreText.SetActive(true);
 
         });
-        scoreState.AddTimer(3f, destination);
+        scoreState.AddTimer(1.5f, destination);
 
         destination.AddStateInitializationMethod(() =>
         {

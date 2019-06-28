@@ -19,4 +19,4 @@ MonoBehaviour:
     radius: 0.24
   - center: {x: 0, y: 0, z: 2}
     radius: 0.42
-  points: 2
+  points: 6

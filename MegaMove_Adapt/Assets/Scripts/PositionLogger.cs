@@ -9,6 +9,18 @@ public class PositionLogger : MonoBehaviour
     public string FolderName = "C:\\Users\\kem3481\\MEGAMOVE";
     public string FileName = "Positions";
     private string OutputDir;
+    public Transform Camera;
+    private Transform eye0InWorld;
+    private Transform eye1InWorld;
+    private Transform cyclopianEyeinWorld;
+    private Transform cyclopianGazeinWorld;
+    private Transform fixationWorld;
+    public GameObject fixationPosition;
+    private Transform particiapntFixating;
+    private Transform participantGaze;
+    private Transform gazeWorld0;
+    private Transform gazeWorld1;
+    public float angularDifference;
 
     //Things you want to write out, set them in the inspector
     public GameObject controller;
@@ -51,7 +63,9 @@ public class PositionLogger : MonoBehaviour
         String trialOutput = Path.Combine(OutputDir, DateTime.Now.ToString("yyyy-MM-dd-HH-mm") + "_Results.txt");
         trialStreams = new FileStream(trialOutput, FileMode.Create, FileAccess.Write);
 
-
+        gazeListener = new GazeListener(PupilConnection);
+        Debug.Log(gazeListener);
+        gazeListener.OnReceive3dGaze += ReceiveGaze;
         //Call the function below to write the column names
         WriteHeader();
     }
@@ -97,6 +111,7 @@ public class PositionLogger : MonoBehaviour
 
         if (gazeData.MappingContext != GazeData.GazeMappingContext.Binocular)
         {
+            Debug.Log("pupil has lost binocular track");
             plConfidence = float.NaN;
             plTimeStamp = "NaN";
             pl_gazedirection_wrtHead_xyz = new Vector3(float.NaN, float.NaN, float.NaN);
@@ -110,9 +125,11 @@ public class PositionLogger : MonoBehaviour
         }
         if (gazeData.MappingContext == GazeData.GazeMappingContext.Binocular)
         {
+            Debug.Log("pupil is tracking binocularly");
             plConfidence = gazeData.Confidence;
             plTimeStamp = DateTime.UtcNow.ToString("HH:mm:ss"); ;
             pl_gazedirection_wrtHead_xyz = gazeData.GazeDirection;
+
 
             pl_E0_Norm_wrtHead_xyz = gazeData.GazeNormal0;
             pl_E1_Norm_wrtHead_xyz = gazeData.GazeNormal1;
@@ -121,6 +138,40 @@ public class PositionLogger : MonoBehaviour
 
             mode = 1;
         }
+
+        // Defining Cyclopian Eye in World Coordiante System
+        eye0InWorld.position = Camera.position + new Vector3( gazeData.EyeCenter0.x, gazeData.EyeCenter0.y, gazeData.EyeCenter0.z);
+        eye1InWorld.position = Camera.position + new Vector3(gazeData.EyeCenter1.x, gazeData.EyeCenter1.y, gazeData.EyeCenter1.z);
+
+        eye0InWorld.rotation = Camera.rotation * eye0InWorld.rotation;
+        eye1InWorld.rotation = Camera.rotation * eye1InWorld.rotation;
+
+        cyclopianEyeinWorld.position = ((eye0InWorld.position + eye1InWorld.position)/2);
+        cyclopianEyeinWorld.rotation = Camera.rotation * cyclopianEyeinWorld.rotation;
+
+        // Defining Position of Fixation point in World Coordinate System
+        fixationWorld.position = fixationPosition.transform.position;
+
+        // Where the participant should be looking in World coordinates
+        particiapntFixating.position = fixationWorld.position - cyclopianEyeinWorld.position;
+        particiapntFixating.rotation = Camera.rotation * particiapntFixating.rotation;
+
+        // Gaze in world coordinates
+        gazeWorld0.position = gazeData.GazeNormal0 + cyclopianEyeinWorld.position;
+        gazeWorld0.rotation = cyclopianEyeinWorld.rotation * gazeWorld0.rotation;
+
+        gazeWorld1.position = gazeData.GazeNormal1 + cyclopianEyeinWorld.position;
+        gazeWorld1.rotation = cyclopianEyeinWorld.rotation * gazeWorld1.rotation;
+
+        cyclopianGazeinWorld.position = ((gazeWorld0.position + gazeWorld1.position) / 2);
+        cyclopianGazeinWorld.rotation = Camera.rotation * cyclopianGazeinWorld.rotation;
+
+        // Where the participant is looking in World coordinates
+        participantGaze.position = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
+        participantGaze.rotation = Camera.rotation * participantGaze.rotation;
+
+        // Angular Difference
+        angularDifference = Mathf.Acos((Vector3.Dot(participantGaze.position, particiapntFixating.position))/(particiapntFixating.position.magnitude * participantGaze.position.magnitude));
     }
 
     void WriteFile()

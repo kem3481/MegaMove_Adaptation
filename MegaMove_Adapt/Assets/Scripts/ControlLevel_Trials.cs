@@ -105,7 +105,7 @@ public class ControlLevel_Trials : ControlLevel
 
         calib.AddStateInitializationMethod(() =>
         {
-            //UnityEngine.Random.InitState
+            UnityEngine.Random.InitState((int)DateTime.Now.Second);
             percentCorrect = 0;
             beginText.SetActive(false);
             endText.SetActive(false);
@@ -113,12 +113,12 @@ public class ControlLevel_Trials : ControlLevel
             playerPosition.SetActive(false);
             scoreDisplay.text = string.Empty;
             scoreText.SetActive(false);
-            Fix = UnityEngine.Random.Range(0, 1);
-            if (Fix == 0)
+            Fix = (int)DateTime.Now.Second;
+            if (Fix%2 == 0)
             {
                 Debug.Log("Start in Fixation");
             }
-            if (Fix == 1)
+            if (Fix%2 == 1)
             {
                 Debug.Log("Start with Free Motion");
             }
@@ -222,11 +222,7 @@ public class ControlLevel_Trials : ControlLevel
                 penalty_y = penalty.transform.position.y;
                 penalty_z = penalty.transform.position.z;
             }
-
-            Debug.Log("trialTypes Length: " + controls.trialTypes.Length);
-            Debug.Log("Polar: " + polarAngle * Mathf.Rad2Deg);
-            Debug.Log("Elevation: " + elevationAngle * Mathf.Rad2Deg);
-            Debug.Log("Trial: " + trials);
+        
         });
         stimOn.AddTimer(.1f, collectResponse);
 
@@ -300,9 +296,6 @@ public class ControlLevel_Trials : ControlLevel
         destination.AddStateInitializationMethod(() =>
         {
             scoreText.SetActive(false);
-            Debug.Log("Trigger pull position: " + trigger_x + ", " + trigger_y + ", " + trigger_z);
-            Debug.Log("Target position: " + target_x + ", " + target_y + ", " + target_z);
-            Debug.Log("Score: " + score);
 
             if (trials < 180)
             {

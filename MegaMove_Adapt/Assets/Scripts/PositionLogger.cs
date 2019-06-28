@@ -24,7 +24,7 @@ public class PositionLogger : MonoBehaviour
 
     //Things you want to write out, set them in the inspector
     public GameObject controller;
-    public GameObject gaze;
+    ////public GameObject gaze;
 
     //Gives user control over when to start and stop recording, trigger this with spacebar;
     public bool startWriting;
@@ -35,7 +35,7 @@ public class PositionLogger : MonoBehaviour
     StringBuilder stringBuilder = new StringBuilder();
     String writeString;
     Byte[] writebytes;
-    public GameObject view;
+
     private ControlLevel_Trials controlLevel;
     public GameObject manager;
 
@@ -90,13 +90,7 @@ public class PositionLogger : MonoBehaviour
             "FrameNumber\t" + 
             "StartTime\t" + 
             "pl_Confidence\t" + 
-            "pl_gazedirection_wrtHead_X\t" +
-            "pl_gazedirection_wrtHead_Y\t" +
-            "pl_gazedirection_wrtHead_Z\t" +
-            "pl_gazedistance_wrtHead\t" +
-            "HandX\t" + 
-            "HandY\t" + 
-            "HandZ\t" + 
+            "Angular Difference"+ 
             Environment.NewLine);
 
 
@@ -137,41 +131,43 @@ public class PositionLogger : MonoBehaviour
             pl_gazedistance = gazeData.GazeDistance;
 
             mode = 1;
+
+
+            // Defining Cyclopian Eye in World Coordiante System
+            eye0InWorld.position = Camera.position + new Vector3(gazeData.eyeCenter0.x, gazeData.eyeCenter0.y, gazeData.eyeCenter0.z);
+            eye1InWorld.position = Camera.position + new Vector3(gazeData.eyeCenter1.x, gazeData.eyeCenter1.y, gazeData.eyeCenter1.z);
+
+            eye0InWorld.rotation = Camera.rotation * eye0InWorld.rotation;
+            eye1InWorld.rotation = Camera.rotation * eye1InWorld.rotation;
+
+            cyclopianEyeinWorld.position = ((eye0InWorld.position + eye1InWorld.position) / 2);
+            cyclopianEyeinWorld.rotation = Camera.rotation * cyclopianEyeinWorld.rotation;
+
+            Debug.Log("Cyclopian Position :" + cyclopianEyeinWorld.position);
+            // Defining Position of Fixation point in World Coordinate System
+            fixationWorld.position = fixationPosition.transform.position;
+
+            // Where the participant should be looking in World coordinates
+            particiapntFixating.position = fixationWorld.position - cyclopianEyeinWorld.position;
+            particiapntFixating.rotation = Camera.rotation * particiapntFixating.rotation;
+            Debug.Log("Fixation :" + fixationWorld.position);
+            // Gaze in world coordinates
+            gazeWorld0.position = gazeData.GazeNormal0 + cyclopianEyeinWorld.position;
+            gazeWorld0.rotation = cyclopianEyeinWorld.rotation * gazeWorld0.rotation;
+
+            gazeWorld1.position = gazeData.GazeNormal1 + cyclopianEyeinWorld.position;
+            gazeWorld1.rotation = cyclopianEyeinWorld.rotation * gazeWorld1.rotation;
+
+            cyclopianGazeinWorld.position = ((gazeWorld0.position + gazeWorld1.position) / 2);
+            cyclopianGazeinWorld.rotation = Camera.rotation * cyclopianGazeinWorld.rotation;
+            Debug.Log("Cyclopian Gaze: " + cyclopianGazeinWorld.position);
+            // Where the participant is looking in World coordinates
+            participantGaze.position = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
+            //participantGaze.rotation = Camera.rotation * participantGaze.rotation;
+            
+            // Angular Difference
+            angularDifference = Mathf.Acos((Vector3.Dot(participantGaze.position, particiapntFixating.position)) / (particiapntFixating.position.magnitude * participantGaze.position.magnitude));
         }
-
-        // Defining Cyclopian Eye in World Coordiante System
-        eye0InWorld.position = Camera.position + new Vector3( gazeData.EyeCenter0.x, gazeData.EyeCenter0.y, gazeData.EyeCenter0.z);
-        eye1InWorld.position = Camera.position + new Vector3(gazeData.EyeCenter1.x, gazeData.EyeCenter1.y, gazeData.EyeCenter1.z);
-
-        eye0InWorld.rotation = Camera.rotation * eye0InWorld.rotation;
-        eye1InWorld.rotation = Camera.rotation * eye1InWorld.rotation;
-
-        cyclopianEyeinWorld.position = ((eye0InWorld.position + eye1InWorld.position)/2);
-        cyclopianEyeinWorld.rotation = Camera.rotation * cyclopianEyeinWorld.rotation;
-
-        // Defining Position of Fixation point in World Coordinate System
-        fixationWorld.position = fixationPosition.transform.position;
-
-        // Where the participant should be looking in World coordinates
-        particiapntFixating.position = fixationWorld.position - cyclopianEyeinWorld.position;
-        particiapntFixating.rotation = Camera.rotation * particiapntFixating.rotation;
-
-        // Gaze in world coordinates
-        gazeWorld0.position = gazeData.GazeNormal0 + cyclopianEyeinWorld.position;
-        gazeWorld0.rotation = cyclopianEyeinWorld.rotation * gazeWorld0.rotation;
-
-        gazeWorld1.position = gazeData.GazeNormal1 + cyclopianEyeinWorld.position;
-        gazeWorld1.rotation = cyclopianEyeinWorld.rotation * gazeWorld1.rotation;
-
-        cyclopianGazeinWorld.position = ((gazeWorld0.position + gazeWorld1.position) / 2);
-        cyclopianGazeinWorld.rotation = Camera.rotation * cyclopianGazeinWorld.rotation;
-
-        // Where the participant is looking in World coordinates
-        participantGaze.position = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
-        participantGaze.rotation = Camera.rotation * participantGaze.rotation;
-
-        // Angular Difference
-        angularDifference = Mathf.Acos((Vector3.Dot(participantGaze.position, particiapntFixating.position))/(particiapntFixating.position.magnitude * participantGaze.position.magnitude));
     }
 
     void WriteFile()
@@ -183,13 +179,7 @@ public class PositionLogger : MonoBehaviour
                     Time.frameCount + "\t"
                     + Time.time * 1000 + "\t"
                     + plConfidence.ToString() + "\t"
-                    + pl_gazedirection_wrtHead_xyz.x.ToString() + "\t"
-                    + pl_gazedirection_wrtHead_xyz.y.ToString() + "\t"
-                    + pl_gazedirection_wrtHead_xyz.z.ToString() + "\t"
-                    + pl_gazedistance.ToString() + "\t" 
-                    + controller.transform.position.x.ToString() + "\t"
-                    + controller.transform.position.y.ToString() + "\t"
-                    + controller.transform.position.z.ToString() + "\t" +
+                    + angularDifference + "\t" +
                     Environment.NewLine
                 );
         writeString = stringBuilder.ToString();

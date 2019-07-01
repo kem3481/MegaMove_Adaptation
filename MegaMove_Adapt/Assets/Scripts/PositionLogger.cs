@@ -90,6 +90,7 @@ public class PositionLogger : MonoBehaviour
             "StartTime\t" + 
             "pl_Confidence\t" + 
             "Angular Difference"+ 
+            "Trial Number" +
             Environment.NewLine);
 
 
@@ -138,10 +139,7 @@ public class PositionLogger : MonoBehaviour
 
             cyclopianEyeinWorld.position = ((eye0InWorld.localPosition + eye1InWorld.localPosition) / 2);
             cyclopianEyeinWorld.rotation = Camera.rotation * cyclopianEyeinWorld.rotation;
-
-            // Defining Position of Fixation point in World Coordinate System
-            //fixationWorld.position = fixationPosition.transform.position;
-
+            
             // Where the participant should be looking in World coordinates
             particiapntFixating = fixationPosition.transform.position - cyclopianEyeinWorld.position;
 
@@ -170,6 +168,7 @@ public class PositionLogger : MonoBehaviour
                     + Time.time * 1000 + "\t"
                     + plConfidence.ToString() + "\t"
                     + angularDifference + "\t" +
+                    + controlLevel.trials + "\t" +
                     Environment.NewLine
                 );
         writeString = stringBuilder.ToString();

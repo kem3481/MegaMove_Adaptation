@@ -154,7 +154,7 @@ public class PositionLogger : MonoBehaviour
             participantGaze = cyclopianGazeinWorld.position - cyclopianEyeinWorld.position;
             
             // Angular Difference
-            angularDifference = Mathf.Acos((Vector3.Dot(participantGaze, particiapntFixating)) / (particiapntFixating.magnitude * participantGaze.magnitude));
+            angularDifference = (Mathf.Rad2Deg * (Mathf.Acos((Vector3.Dot(participantGaze, particiapntFixating)) / (particiapntFixating.magnitude * participantGaze.magnitude))));
         }
     }
 
@@ -174,6 +174,8 @@ public class PositionLogger : MonoBehaviour
         writeString = stringBuilder.ToString();
         writebytes = Encoding.ASCII.GetBytes(writeString);
         trialStreams.Write(writebytes, 0, writebytes.Length);
+        Debug.DrawRay(new Vector3(0,0,0), participantGaze, Color.red);
+        Debug.DrawRay(new Vector3(0, 0, 0), particiapntFixating, Color.green);
     }
 
     public void Update()

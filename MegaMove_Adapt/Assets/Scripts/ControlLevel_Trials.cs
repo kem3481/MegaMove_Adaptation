@@ -74,6 +74,7 @@ public class ControlLevel_Trials : ControlLevel
     // List of 20 of each trial type
     public int[] trialTypes;
     
+
     public override void DefineControlLevel()
     {
         // Defining States
